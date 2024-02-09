@@ -137,7 +137,7 @@ function App() {
     document.getElementById('page2').classList.remove('hidden');
     document.getElementById('page1').classList.add('hidden');
     if(role[0] == "b") {
-      document.getElementById('fieldIMG').src = "./blueField.png";
+      document.getElementById('fieldIMG').src = "../blueField.png";
       document.getElementById('b1').classList.remove('redArr');
       document.getElementById('b2').classList.remove('redArr');
       document.getElementById('b1').classList.add('blueArr');
@@ -153,7 +153,7 @@ function App() {
       document.getElementById('start4').classList.add('blueArr');
     }
     else {
-      document.getElementById('fieldIMG').src = "./redField.png";
+      document.getElementById('fieldIMG').src = "../redField.png";
       document.getElementById('b1').classList.remove('blueArr');
       document.getElementById('b2').classList.remove('blueArr');
       document.getElementById('b1').classList.add('redArr');
@@ -282,7 +282,7 @@ function App() {
     document.getElementById('page2').classList.remove('hidden');
     document.getElementById('page1').classList.add('hidden');
     if(role[0] == "b") {
-      document.getElementById('fieldIMG').src = "./blueField.png";
+      document.getElementById('fieldIMG').src = "../blueField.png";
       document.getElementById('b1').classList.remove('redArr');
       document.getElementById('b2').classList.remove('redArr');
       document.getElementById('b1').classList.add('blueArr');
@@ -298,7 +298,7 @@ function App() {
       document.getElementById('start4').classList.add('blueArr');
     }
     else {
-      document.getElementById('fieldIMG').src = "./redField.png";
+      document.getElementById('fieldIMG').src = "../redField.png";
       document.getElementById('b1').classList.remove('blueArr');
       document.getElementById('b2').classList.remove('blueArr');
       document.getElementById('b1').classList.add('redArr');
