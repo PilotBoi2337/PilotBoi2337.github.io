@@ -59,6 +59,7 @@ select, .question input {
   padding-left: 10px;
   border-style: none;
   font-weight: bold;
+  background-color: #3d3d3d;
 }
 
 .question textarea {
@@ -76,6 +77,7 @@ select, .question input {
   font-weight: bold;
   letter-spacing: 1.5px;
   margin: 1px;
+  color: white;
 }
 
 #getRobotButton {
