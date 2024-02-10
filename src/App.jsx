@@ -5,7 +5,8 @@ import blueField from './assets/blueField.png';
 import redField from './assets/redField.png';
 
 function App() {
-  localStorage.removeItem("schedule");
+
+
   const [showQR, setShowQR] = useState(false);
   const [finalData, setQrData] = useState(''); // Initialize qrData as a state variable
   
@@ -33,7 +34,7 @@ function App() {
     for(var index in array){
       data += array[index] + ", ";
     };
-    if(data.substring(0, 9) == "undefined"){
+    while(data.substring(0, 9) == "undefined"){
       data = data.substring(9);
     };
     if(data.substring(data.length - 4) == ", , ") {
@@ -138,7 +139,6 @@ function App() {
     document.getElementById('page2').classList.remove('hidden');
     document.getElementById('page1').classList.add('hidden');
     if(role[0] == "b") {
-      console.log("blue field!");
       document.getElementById('redField').style.display = 'none';
       document.getElementById('blueField').style.display = 'block';
       document.getElementById('b1').classList.remove('redArr');
@@ -156,7 +156,6 @@ function App() {
       document.getElementById('start4').classList.add('blueArr');
     }
     else {
-      console.log("red field!");
       document.getElementById('blueField').style.display = 'none';
       document.getElementById('redField').style.display = 'block';
       document.getElementById('b1').classList.remove('blueArr');
@@ -173,6 +172,32 @@ function App() {
       document.getElementById('start3').classList.add('redArr');
       document.getElementById('start4').classList.add('redArr');
     }
+
+    //unhiding the notes
+    document.getElementById('b1').classList.remove('hidden');
+    document.getElementById('b2').classList.remove('hidden');
+    document.getElementById('b3').classList.remove('hidden');
+    document.getElementById('t1').classList.remove('hidden');
+    document.getElementById('t2').classList.remove('hidden');
+    document.getElementById('t3').classList.remove('hidden');
+    document.getElementById('t4').classList.remove('hidden');
+    document.getElementById('t5').classList.remove('hidden');
+
+    //unselecting the notes
+    document.getElementById('b1').classList.remove('noteSelected');
+    document.getElementById('b2').classList.remove('noteSelected');
+    document.getElementById('b3').classList.remove('noteSelected');
+    document.getElementById('t1').classList.remove('noteSelected');
+    document.getElementById('t2').classList.remove('noteSelected');
+    document.getElementById('t3').classList.remove('noteSelected');
+    document.getElementById('t4').classList.remove('noteSelected');
+    document.getElementById('t5').classList.remove('noteSelected');
+
+    //unselecting the starting position
+    document.getElementById('start1').classList.remove('startPosSelected');
+    document.getElementById('start2').classList.remove('startPosSelected');
+    document.getElementById('start3').classList.remove('startPosSelected');
+    document.getElementById('start4').classList.remove('startPosSelected');
   }
 
   function lastPage1() {
@@ -183,75 +208,137 @@ function App() {
     document.getElementById('page2').classList.add('hidden');
   }
 
-
   function startAuto() {
     startTime = new Date();
     document.getElementById('startAuto').style.backgroundColor = "green";
   }
 
   function logStart(startingPos) {
+
+    //clears previous selection indicator 
+    document.getElementById('start1').classList.remove('startPosSelected');
+    document.getElementById('start2').classList.remove('startPosSelected');
+    document.getElementById('start3').classList.remove('startPosSelected');
+    document.getElementById('start4').classList.remove('startPosSelected');
+
     //log starting position
     startPos = startingPos;
+    document.getElementById(startPos).classList.add('startPosSelected');
     qrData2 = startTime + startPos + autoNoteData;
   }
 
   function logNote(note) {
     //a note is picked up
+
+    //clears previous selection indicator
+    document.getElementById('b1').classList.remove('noteSelected');
+    document.getElementById('b2').classList.remove('noteSelected');
+    document.getElementById('b3').classList.remove('noteSelected');
+    document.getElementById('t1').classList.remove('noteSelected');
+    document.getElementById('t2').classList.remove('noteSelected');
+    document.getElementById('t3').classList.remove('noteSelected');
+    document.getElementById('t4').classList.remove('noteSelected');
+    document.getElementById('t5').classList.remove('noteSelected');
+
     pickupTime = new Date();
-    if(note){heldNote = note;}
-    
+    if(note){
+      //auto
+      heldNote = note;
+      document.getElementById(heldNote).classList.add('noteSelected');
+    }
     timeToPickup = (pickupTime - startTime) / 1000;
+
+    document.getElementById('pickUpB').classList.add('disabled');
+    document.getElementById('speakerB').classList.remove('disabled');
+    document.getElementById('ampB').classList.remove('disabled');
+    document.getElementById('droppedB').classList.remove('disabled');
+    document.getElementById('trapB').classList.remove('disabled');
   }
 
   function droppedNote() {
-    const scoringLocation = "dropped";
-    const endTime = new Date();
-    const timeToScore = (endTime - pickupTime) / 1000;
-    
-    if(heldNote) {
-      autoNoteData += saveAsCSV([heldNote, scoringLocation, timeToPickup, timeToScore]);
-      if(autoNoteData.substring(0, 9) == "undefined"){
-        autoNoteData = autoNoteData.substring(9);
-      };
-    } else {
-      //teleOp
-      teleOpNoteData += saveAsCSV([scoringLocation, timeToPickup, timeToScore]);
-      if(teleOpNoteData.substring(0, 9) == "undefined"){
-        teleOpNoteData = teleOpNoteData.substring(9);
-      };
+    if(document.getElementById('pickUpB').classList.contains('disabled')){
+      const scoringLocation = "dropped";
+      const endTime = new Date();
+      const timeToScore = (endTime - pickupTime) / 1000;
+      
+      if(heldNote) {
+        //auto
+        autoNoteData += saveAsCSV([heldNote, scoringLocation, timeToPickup, timeToScore]);
+        if(autoNoteData.substring(0, 9) == "undefined"){
+          autoNoteData = autoNoteData.substring(9);
+        };
+        document.getElementById(heldNote).classList.add('hidden');
+      } else {
+        //teleOp
+        teleOpNoteData += saveAsCSV([scoringLocation, timeToPickup, timeToScore]);
+        if(teleOpNoteData.substring(0, 9) == "undefined"){
+          teleOpNoteData = teleOpNoteData.substring(9);
+        };
+      }
     }
-    
     //reseting values for next cycle
     heldNote = null;
     pickupTime = null;
+
+    document.getElementById('pickUpB').classList.remove('disabled');
+    document.getElementById('speakerB').classList.add('disabled');
+    document.getElementById('ampB').classList.add('disabled');
+    document.getElementById('droppedB').classList.add('disabled');
+    document.getElementById('trapB').classList.add('disabled');
   }
 
   function scoredNote(place) {
-    const scoringLocation = place;
-    const endTime = new Date();
-    const timeToScore = (endTime - pickupTime) / 1000;
-    if(heldNote){
-      autoNoteData += saveAsCSV([heldNote, scoringLocation, timeToPickup, timeToScore]);
-      if(autoNoteData.substring(0, 9) == "undefined"){
-        autoNoteData = autoNoteData.substring(9);
-      };
-      console.log(autoNoteData);
-    } else {
-      //teleOp
+    if(document.getElementById('pickUpB').classList.contains('disabled')){
+      const scoringLocation = place;
+      const endTime = new Date();
+      const timeToScore = (endTime - pickupTime) / 1000;
+      if(heldNote){
+        //auto
+        autoNoteData += saveAsCSV([heldNote, scoringLocation, timeToPickup, timeToScore]);
+        if(autoNoteData.substring(0, 9) == "undefined"){
+          autoNoteData = autoNoteData.substring(9);
+        };
+        console.log(autoNoteData);
+        document.getElementById(heldNote).classList.add('hidden');
+      } else {
+        //teleOp
+        teleOpNoteData += saveAsCSV([scoringLocation, timeToPickup, timeToScore]);
+        if(teleOpNoteData.substring(0, 9) == "undefined"){
+          teleOpNoteData = teleOpNoteData.substring(9);
+        };
+      }
+      
+      //reseting values for next cycle
+      heldNote = null;
+      pickupTime = null;
+
+      document.getElementById('pickUpB').classList.remove('disabled');
+      document.getElementById('speakerB').classList.add('disabled');
+      document.getElementById('ampB').classList.add('disabled');
+      document.getElementById('droppedB').classList.add('disabled');
+      document.getElementById('trapB').classList.add('disabled');
+    }
+  }
+
+  function scoredTrap() {
+    if(document.getElementById('pickUpB').classList.contains('disabled')){
+      const scoringLocation = "trap";
+      const endTime = new Date();
+      const timeToScore = (endTime - pickupTime) / 1000;
       teleOpNoteData += saveAsCSV([scoringLocation, timeToPickup, timeToScore]);
       if(teleOpNoteData.substring(0, 9) == "undefined"){
         teleOpNoteData = teleOpNoteData.substring(9);
       };
     }
-    
-    
-    //reseting values for next cycle
+
     heldNote = null;
     pickupTime = null;
-  }
 
-  function trap() {
-    trapCount++;
+    document.getElementById('pickUpB').classList.remove('disabled');
+    document.getElementById('speakerB').classList.add('disabled');
+    document.getElementById('ampB').classList.add('disabled');
+    document.getElementById('droppedB').classList.add('disabled');
+    document.getElementById('trapB').classList.add('disabled');
   }
 
   function climb() {
@@ -266,6 +353,16 @@ function App() {
     console.log(qrData);
     document.getElementById('page3').classList.remove('hidden');
     document.getElementById('page2').classList.add('hidden');
+
+    //if a note is brought to teleOp:
+    if(heldNote){
+      heldNote == null;
+      document.getElementById('pickUpB').classList.add('disabled');
+      document.getElementById('speakerB').classList.remove('disabled');
+      document.getElementById('ampB').classList.remove('disabled');
+      document.getElementById('droppedB').classList.remove('disabled');
+      document.getElementById('trapB').classList.remove('disabled');
+    }
   }
 
   function lastPage2() {
@@ -287,7 +384,8 @@ function App() {
     document.getElementById('page2').classList.remove('hidden');
     document.getElementById('page1').classList.add('hidden');
     if(role[0] == "b") {
-      document.getElementById('fieldIMG').src = blueField;
+      document.getElementById('redField').style.display = 'none';
+      document.getElementById('blueField').style.display = 'block';
       document.getElementById('b1').classList.remove('redArr');
       document.getElementById('b2').classList.remove('redArr');
       document.getElementById('b1').classList.add('blueArr');
@@ -303,7 +401,8 @@ function App() {
       document.getElementById('start4').classList.add('blueArr');
     }
     else {
-      document.getElementById('fieldIMG').src = "../redField.png";
+      document.getElementById('blueField').style.display = 'none';
+      document.getElementById('redField').style.display = 'block';
       document.getElementById('b1').classList.remove('blueArr');
       document.getElementById('b2').classList.remove('blueArr');
       document.getElementById('b1').classList.add('redArr');
@@ -318,9 +417,13 @@ function App() {
       document.getElementById('start3').classList.add('redArr');
       document.getElementById('start4').classList.add('redArr');
     }
+
+    document.getElementById('page2').classList.remove('hidden');
+    document.getElementById('page3').classList.add('hidden');
   }
 
   function nextPage3() {
+    if(climbStartTime == undefined){climbStartTime = "noClimb";}
     qrData3 = saveAsCSV(["teleOp", teleOpNoteData]) + saveAsCSV(["endgame", trapCount, climbStartTime]);
     console.log(qrData3);
     qrData = qrData1 + qrData2 + qrData3 + qrData4;
@@ -334,15 +437,35 @@ function App() {
     document.getElementById('page4').classList.add('hidden');
   }
 
+  function lastPage4() {
+    document.getElementById('page4').classList.remove('hidden');
+    document.getElementById('page5').classList.add('hidden');
+  }
 
   function nextPage4() {
-    var failSelected = document.getElementById('CFL').value;
-    qrData4 = saveAsCSV([failSelected]);
+
+    var pickupMethod = document.getElementById('pickUpMethods').value;
+    var climbStatus = document.getElementById('climbStatus').value;
+    var otherInfo = document.getElementById('otherInfo').value;
+    //compile fails list
+    var fails = document.querySelector('fieldSet');
+    var failsSelected = Array.from(fails.querySelectorAll('input[type="checkbox"]:checked')).map(input => input.value);
+    var failsList;
+    for(var i in failsSelected) {
+      failsList += failsSelected[i] + " | ";
+    };
+    if(failsList == "undefined"){
+      failsList == "no fails";
+    };
+
+    qrData4 = saveAsCSV([pickupMethod, climbStatus]) + saveAsCSV([failsList]) + saveAsCSV([otherInfo])
+    console.log(qrData4);
     qrData = qrData1 + qrData2 + qrData3 + qrData4;
     document.getElementById('page5').classList.remove('hidden');
     document.getElementById('page4').classList.add('hidden');
     setQrData(qrData);
     console.log(qrData);
+
   }
 
   return (
@@ -396,8 +519,8 @@ function App() {
           <button class="forward" onClick={() => nextPage2()}><i class="fa-solid fa-arrow-right"></i></button>
         </div>
         <div class="imgContainer">
-          <img class="fieldIMG" id="blueField" src={blueField} alt="Field" />
-          <img class="fieldIMG" id="redField" src={redField} alt="Field" />
+          <img class="fieldIMG" id="blueField" src={blueField} alt="Field image" />
+          <img class="fieldIMG" id="redField" src={redField} alt="Field image" />
           <button class="startPos blueArr" id="start1" onClick={() => logStart("start1")}>1</button>
           <button class="startPos blueArr" id="start2" onClick={() => logStart("start2")}>2</button>
           <button class="startPos blueArr" id="start3" onClick={() => logStart("start3")}>3</button>
@@ -424,12 +547,12 @@ function App() {
           <button class="forward" onClick={() => nextPage3()}><i class="fa-solid fa-arrow-right"></i></button>
         </div>
         
-        <button class="scored" id="b3" onClick={() => logNote()}>Pickup</button>
-        <button class="scored" onClick={() => scoredNote("speaker")}>Scored in speaker</button>
-        <button class="scored" onClick={() => scoredNote("amp")}>Scored in Amp</button>
-        <button class="scored" onClick={() => droppedNote()}>Dropped</button>
-        
-        <button class="scored" onClick={() => trap()}>Trap</button>
+        <button class="scored" id="pickUpB" onClick={() => logNote()}>Pickup</button>
+        <button class="scored disabled" id="speakerB" onClick={() => scoredNote("speaker")}>Scored in speaker</button>
+        <button class="scored disabled" id="ampB" onClick={() => scoredNote("amp")}>Scored in Amp</button>
+        <button class="scored disabled" id="droppedB" onClick={() => droppedNote()}>Dropped</button>
+        <button class="scored disabled" id="trapB" onClick={() => scoredTrap()}>Trap</button>
+
         <button class="scored" onClick={() => climb()}>Climb</button>
       </div>
 
@@ -437,21 +560,78 @@ function App() {
         {/* fouls, fail(climb), CFL (common fail list), Other, Pickup? */}
         <div class="topButtons">
           <button class="back" onClick={() => lastPage3()}><i class="fa-solid fa-arrow-left"></i></button>
-          <h3>Comments</h3>
+          <h3>Post Match</h3>
           <button class="forward" onClick={() => nextPage4()}><i class="fa-solid fa-arrow-right"></i></button>
         </div>
 
         <form>
-          <label for="CFL">Fails: </label>
-          <select name="CFL" id="CFL" required>
-              {/* get event_key from URL */}
-              <option value="robot exploded">Robot exploded</option>
-              <option value="sean sucks">Sean Sucks At Mario Kart</option>
+
+          <label for="pickUpMethods">Pickup Method: </label>
+          <select name="pickUpMethods" id="pickUpMethods" required>
+              <option value="ground and source" selected>ground and source</option>
+              <option value="ground only">ground only</option>
+              <option value="source only">source only</option>
+              <option value="none">none</option>
           </select>
+
+          <p></p>
+
+          <label for="climbStatus">Climb: </label>
+          <select name="climbStatus" id="climbStatus" required>
+              <option value="no attempt">no attempt</option>
+              <option value="climb success">success</option>
+              <option value="climb failed">failed</option>
+          </select>
+
+          <p></p>
+
+          <fieldset>
+            <legend>Common Fails List:</legend>
+            <div class="fail">
+              <label for="fail1">Stopped (and restarted)</label>
+              <input type="checkbox" id="fail1" name="fail1" value="stopped (and restarted)"></input>
+            </div>
+            <div class="fail">
+              <label for="fail2">Died</label>
+              <input type="checkbox" id="fail2" name="fail2" value="died"></input>
+            </div>
+            <div class="fail">
+              <label for="fail1">Tipped</label>
+              <input type="checkbox" id="fail3" name="fail3" value="tipped"></input>
+            </div>
+            <div class="fail">
+              <label for="fail4">Red card</label>
+              <input type="checkbox" id="fail4" name="fail4" value="red card"></input>
+            </div>
+            <div class="fail">
+              <label for="fail5">Yellow card</label>
+              <input type="checkbox" id="fail5" name="fail5" value="yellow card"></input>
+            </div>
+            <div class="fail">
+              <label for="fail6">Broke</label>
+              <input type="checkbox" id="fail6" name="fail6" value="broke"></input>
+            </div>
+            <div class="fail">
+              <label for="fail7">Auto failure</label>
+              <input type="checkbox" id="fail7" name="fail7" value="auto failure"></input>
+            </div>
+            <div class="fail">
+              <label for="fail8">Got stuck</label>
+              <input type="checkbox" id="fail8" name="fail8" value="got stuck"></input>
+            </div>
+          </fieldset>
+
+          <label>Other Info: </label>
+          <div><textarea id="otherInfo"></textarea></div>
+
+
         </form>
       </div>
 
       <div class="page hidden page5" id="page5">
+      <div class="topButtons">
+          <button class="back" onClick={() => lastPage4()}><i class="fa-solid fa-arrow-left"></i></button>
+        </div>
         <button onClick={() => setShowQR(true)}>Generate QR Code</button>
         <QRModal
           show={showQR}

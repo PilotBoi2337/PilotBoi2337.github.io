@@ -152,6 +152,14 @@
   left: 82%;
 }
 
+.noteSelected {
+  background-color: rgb(239, 205, 191);
+}
+
+.startPosSelected {
+  background-color: rgba(141, 141, 141, 0.385);
+}
+
 .scored {
   width: 20rem;
   margin: 8px;
@@ -168,4 +176,35 @@ h3 {
   padding: 0;
   position: relative;
   top: 5px;
+}
+
+.disabled {
+  background-color: rgb(105, 105, 105);
+}
+
+/* page 4 styles */
+
+fieldset {
+  border: 2px solid #ccc;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+legend {
+  padding: 0 10px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.fail {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+input[type="checkbox"] {
+  transform: scale(1.5); /* Enlarge the checkbox */
+  margin-right: 10px;
+  cursor: pointer;
 }
