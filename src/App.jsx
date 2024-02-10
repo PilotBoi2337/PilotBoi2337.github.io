@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import './App.css'
 import QRModal from './QRModal';
+import blueField from './assets/blueField.png';
+import redField from './assets/redField.png';
 
 function App() {
   localStorage.removeItem("schedule");
@@ -130,14 +132,15 @@ function App() {
     if(qrData1.substring(0, 9) == "undefined"){
       qrData1 = qrData1.substring(9);
     }
-    console.log(qrData);
     qrData = qrData1 + qrData2 + qrData3 + qrData4;
-
+    console.log(qrData);
     //unhide next page
     document.getElementById('page2').classList.remove('hidden');
     document.getElementById('page1').classList.add('hidden');
     if(role[0] == "b") {
-      document.getElementById('fieldIMG').src = "./assets/blueField.png";
+      console.log("blue field!");
+      document.getElementById('redField').style.display = 'none';
+      document.getElementById('blueField').style.display = 'block';
       document.getElementById('b1').classList.remove('redArr');
       document.getElementById('b2').classList.remove('redArr');
       document.getElementById('b1').classList.add('blueArr');
@@ -153,7 +156,9 @@ function App() {
       document.getElementById('start4').classList.add('blueArr');
     }
     else {
-      document.getElementById('fieldIMG').src = "./assets/redField.png";
+      console.log("red field!");
+      document.getElementById('blueField').style.display = 'none';
+      document.getElementById('redField').style.display = 'block';
       document.getElementById('b1').classList.remove('blueArr');
       document.getElementById('b2').classList.remove('blueArr');
       document.getElementById('b1').classList.add('redArr');
@@ -282,7 +287,7 @@ function App() {
     document.getElementById('page2').classList.remove('hidden');
     document.getElementById('page1').classList.add('hidden');
     if(role[0] == "b") {
-      document.getElementById('fieldIMG').src = "../blueField.png";
+      document.getElementById('fieldIMG').src = blueField;
       document.getElementById('b1').classList.remove('redArr');
       document.getElementById('b2').classList.remove('redArr');
       document.getElementById('b1').classList.add('blueArr');
@@ -391,7 +396,8 @@ function App() {
           <button class="forward" onClick={() => nextPage2()}><i class="fa-solid fa-arrow-right"></i></button>
         </div>
         <div class="imgContainer">
-          <img id="fieldIMG" alt="field image"></img>
+          <img class="fieldIMG" id="blueField" src={blueField} alt="Field" />
+          <img class="fieldIMG" id="redField" src={redField} alt="Field" />
           <button class="startPos blueArr" id="start1" onClick={() => logStart("start1")}>1</button>
           <button class="startPos blueArr" id="start2" onClick={() => logStart("start2")}>2</button>
           <button class="startPos blueArr" id="start3" onClick={() => logStart("start3")}>3</button>
