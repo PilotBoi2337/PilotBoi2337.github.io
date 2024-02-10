@@ -17,6 +17,7 @@ function App() {
   var qrData1 = "";
   var qrData2 = "";
   var startTime, startPos, autoNoteData;
+  var mobility = "no";
   var qrData3 = "";
   var teleOpNoteData;
   var trapCount = 0;
@@ -230,6 +231,18 @@ function App() {
     qrData2 = startTime + startPos + autoNoteData;
   }
 
+  function mobilityToggle(){
+    
+    if(!document.getElementById('mobilityButton').classList.contains('selected')){
+      document.getElementById('mobilityButton').classList.add('selected');
+      mobility = "yes";
+    }
+    else {
+      mobility = "no";
+      document.getElementById('mobilityButton').classList.remove('selected');
+    }
+  }
+
   function logNote(note) {
     //a note is picked up
 
@@ -246,6 +259,8 @@ function App() {
     pickupTime = new Date();
     if(note){
       //auto
+      document.getElementById('mobilityButton').classList.add('selected');
+      mobility = "yes";
       heldNote = note;
       document.getElementById(heldNote).classList.add('noteSelected');
     }
@@ -541,6 +556,7 @@ function App() {
         <button class="scored" id="speakerButton" onClick={() => scoredNote("speaker")}>Scored in Speaker</button>
         <button class="scored" id="ampButton" onClick={() => scoredNote("amp")}>Scored in Amp</button>
         <button class="scored" id="droppedButton" onClick={() => droppedNote()}>Dropped</button>
+        <button class="scored" id="mobilityButton" onClick={() => mobilityToggle()}>Mobility</button>
       </div>
 
       <div class="page hidden page3" id="page3">
@@ -558,6 +574,7 @@ function App() {
         <button class="scored disabled" id="trapB" onClick={() => scoredTrap()}>Trap</button>
 
         <button class="scored" onClick={() => climb()}>Climb</button>
+        
       </div>
 
       <div class="page hidden page4" id="page4">

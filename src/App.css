@@ -27,7 +27,6 @@
 .logo {
   width: 30%;
   margin-bottom: 10%;
-  
 }
 
 .question {
@@ -67,8 +66,6 @@ select, .question input {
   height: 2.6rem;
 }
 
-
-
 .bButton {
   border-radius: 25px;
   background-color: rgba(39, 38, 38, 0.425);
@@ -78,6 +75,10 @@ select, .question input {
   font-weight: bold;
   letter-spacing: 1.5px;
   margin: 1px;
+}
+
+#getRobotButton {
+  margin-top: 15px;
 }
 
 #nextPage1Button {
@@ -120,6 +121,17 @@ select, .question input {
   height: 10vw;
   border-radius: 50%;
   background-color: orange;
+}
+
+.note::before {
+  content: ''; /* Required for the pseudo-element to be generated */
+  background-color: white; /* White background for the inner circle */
+  border-radius: 50%; /* Make the pseudo-element circular */
+  width: 70%; /* Width of the inner circle, relative to the button */
+  height: 70%; /* Height of the inner circle, relative to the button */
+  position: absolute; /* Position absolutely within the button */
+  left: 15%;
+  top: 15%;
 }
 
 .startPos{
@@ -219,6 +231,10 @@ select, .question input {
 }
 
 .startPosSelected {
+  background-color: rgba(141, 141, 141, 0.385);
+}
+
+.selected {
   background-color: rgba(141, 141, 141, 0.385);
 }
 
