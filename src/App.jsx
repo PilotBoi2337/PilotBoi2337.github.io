@@ -12,7 +12,7 @@ function App() {
   const [finalData, setQrData] = useState(''); // Initialize qrData as a state variable
   
   //placeholders
-  const qrTitle = "Example QR Code";
+  const qrTitle = "Here it is!";
   var qrData = "";
   var qrData1 = "";
   var qrData2 = "";
