@@ -3,6 +3,7 @@ import './App.css'
 import QRModal from './QRModal';
 import blueField from './assets/blueField.png';
 import redField from './assets/redField.png';
+import logo from './assets/aembot_icon_vector.svg';
 
 function App() {
 
@@ -116,6 +117,8 @@ function App() {
     }
     var teamNum = correctTeamNum.substring(3);
     console.log(teamNum);
+
+    document.getElementById('getRobotButton').classList.add('hidden');
     document.getElementById("startMessage").innerHTML = "You're scouting: <span id=teamNum>" + teamNum + "</span>";
     document.getElementById('nextPage1Button').classList.remove('hidden');
   }
@@ -473,9 +476,10 @@ function App() {
       <div class="page page1" id="page1">
         {/* event, role, name, match, robot */}
         <h1>AEMScout</h1>
+        <img class="logo" src={logo}></img>
         <form>
           <div class="question">
-            <label for="event">Event: </label>
+            <label for="event">EVENT</label>
             <select name="event" id="eventKey" required>
                 {/* get event_key from URL */}
                 <option value="2023pncmp">2023 DCMP</option>
@@ -487,7 +491,7 @@ function App() {
             </select>
           </div>
           <div class="question">
-            <label for="role">Role: </label>
+            <label for="role">ROLE </label>
               <select name="role" id="role" required>
                 <option value="b1">Blue 1</option>
                 <option value="b2">Blue 2</option>
@@ -498,17 +502,17 @@ function App() {
               </select>
           </div>
           <div class="question">
-            <label for="initials">Scouter Initials: </label>
+            <label for="initials">SCOUTER INITIALS </label>
             <input type="text" id="initials" required></input>
           </div>
           <div class="question">
-            <label for="match">Match: </label>
+            <label for="match">MATCH</label>
             <input type="text" id="match" required></input>
           </div>
         </form>
-        <button onClick={() => assignRobot()}>Get Robot</button>
+        <button class="bButton" id="getRobotButton" onClick={() => assignRobot()}>GET ROBOT</button>
         <h3 id="startMessage"></h3>
-        <button id="nextPage1Button" class="hidden" onClick={() => nextPage1()}>next page</button>
+        <button class="bButton hidden" id="nextPage1Button" onClick={() => nextPage1()}>NEXT PAGE</button>
       </div>
 
       <div class="page hidden page2" id="page2">
@@ -565,30 +569,32 @@ function App() {
         </div>
 
         <form>
-
-          <label for="pickUpMethods">Pickup Method: </label>
-          <select name="pickUpMethods" id="pickUpMethods" required>
-              <option value="ground and source" selected>ground and source</option>
-              <option value="ground only">ground only</option>
-              <option value="source only">source only</option>
-              <option value="none">none</option>
-          </select>
+          <div class="question">
+            <label for="pickUpMethods">PICKUP METHOD</label>
+            <select name="pickUpMethods" id="pickUpMethods" required>
+                <option value="ground and source" selected>Ground and Source</option>
+                <option value="ground only">Ground only</option>
+                <option value="source only">Source only</option>
+                <option value="none">none</option>
+            </select>
+          </div>
+          <p></p>
+          <div class="question">
+            <label for="climbStatus">CLIMB </label>
+            <select name="climbStatus" id="climbStatus" required>
+                <option value="no attempt">No Attempt</option>
+                <option value="climb success">success</option>
+                <option value="climb failed">failed</option>
+            </select>
+          </div>
 
           <p></p>
 
-          <label for="climbStatus">Climb: </label>
-          <select name="climbStatus" id="climbStatus" required>
-              <option value="no attempt">no attempt</option>
-              <option value="climb success">success</option>
-              <option value="climb failed">failed</option>
-          </select>
-
-          <p></p>
-
+          <div class="CFL">
+          <label class="topLabel">COMMON FAILS LIST</label>
           <fieldset>
-            <legend>Common Fails List:</legend>
             <div class="fail">
-              <label for="fail1">Stopped (and restarted)</label>
+              <label for="fail1">Stopped (and Restarted)</label>
               <input type="checkbox" id="fail1" name="fail1" value="stopped (and restarted)"></input>
             </div>
             <div class="fail">
@@ -600,11 +606,11 @@ function App() {
               <input type="checkbox" id="fail3" name="fail3" value="tipped"></input>
             </div>
             <div class="fail">
-              <label for="fail4">Red card</label>
+              <label for="fail4">Red Card</label>
               <input type="checkbox" id="fail4" name="fail4" value="red card"></input>
             </div>
             <div class="fail">
-              <label for="fail5">Yellow card</label>
+              <label for="fail5">Yellow Card</label>
               <input type="checkbox" id="fail5" name="fail5" value="yellow card"></input>
             </div>
             <div class="fail">
@@ -612,18 +618,20 @@ function App() {
               <input type="checkbox" id="fail6" name="fail6" value="broke"></input>
             </div>
             <div class="fail">
-              <label for="fail7">Auto failure</label>
+              <label for="fail7">Auto Failure</label>
               <input type="checkbox" id="fail7" name="fail7" value="auto failure"></input>
             </div>
             <div class="fail">
-              <label for="fail8">Got stuck</label>
+              <label for="fail8">Got Stuck</label>
               <input type="checkbox" id="fail8" name="fail8" value="got stuck"></input>
             </div>
           </fieldset>
+        </div>
 
-          <label>Other Info: </label>
+          <div class="question">
+          <label>OTHER INFO </label>
           <div><textarea id="otherInfo"></textarea></div>
-
+          </div>
 
         </form>
       </div>
