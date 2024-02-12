@@ -15,12 +15,24 @@ function App() {
   //for pageQR (the page with the qr scanner)
   const [showScanner, setShowScanner] = useState(false);
   const [scannedData, setData] = useState('No result');
+  const [downloadUrl, setDownloadUrl] = useState(null);
 
-  const handleScan = scannedData => {
-    if (scannedData) {
-      setData(scannedData);
+  const handleScan = (result, error) => {
+    if (!!result) {
+      setData(result?.text);
+      const csvBlob = new Blob([qrData], { type: 'text/csv' });
+      const fileUrl = URL.createObjectURL(csvBlob);
+      setDownloadUrl(fileUrl);
+      document.getElementById('resetDownloadB').classList.remove('hidden');
     }
-  }
+  };
+
+  const handleStopScan = () => {
+    //reset scanning
+    setData("No result");
+    document.getElementById('resetDownloadB').classList.add('hidden');
+    setDownloadUrl(null);
+  };
 
   const handleError = err => {
     console.error(err);
@@ -28,6 +40,16 @@ function App() {
 
   const handleStartScan = () => {
     setShowScanner(true);
+  }
+
+  function goHome() {
+    document.getElementById('page1').classList.remove('hidden');
+    document.getElementById('pageQR').classList.add('hidden');
+  }
+
+  function goToScanner() {
+    document.getElementById('pageQR').classList.remove('hidden');
+    document.getElementById('page1').classList.add('hidden');
   }
 
 
@@ -518,11 +540,9 @@ function App() {
     document.getElementById('page5').classList.remove('hidden');
     document.getElementById('page4').classList.add('hidden');
 
-    const csvBlob = new Blob([qrData], { type: 'text/csv' });
-    const fileUrl = URL.createObjectURL(csvBlob);
     //actually encodes the data into the QRCode
     //if link based download fails, replace fileUrl with qrData
-    setQrData(fileUrl);
+    setQrData(qrData);
     console.log(qrData);
 
   }
@@ -531,7 +551,8 @@ function App() {
     <div className="app">
       <div class="page page1" id="page1">
         {/* event, role, name, match, robot */}
-        <h1>AEMScout</h1>
+        <button class="goToScannerB" onClick={() => goToScanner()}><i class="fa-solid fa-qrcode"></i></button>
+        <h1 style={{marginTop: '80px'}}>AEMScout</h1>
         <img class="logo" src={logo}></img>
         <form>
           <div class="question">
@@ -571,16 +592,29 @@ function App() {
         <button class="bButton hidden" id="nextPage1Button" onClick={() => nextPage1()}>NEXT PAGE</button>
       </div>
 
-      <div class="page pageQR" id="pageQR">
-      <button onClick={handleStartScan}>Start Scanning</button>
-      {showScanner && (
-          <QrReader
-            delay={300}
-            onError={handleError}
-            onResult={handleScan}
-            style={{ width: '100%' }}
-        />)}
-        <p>{scannedData}</p>
+      <div class="page hidden pageQR" id="pageQR">
+        <div class="topButtons">
+        <button style={{height: '100%', paddingLeft: '30px', paddingRight: '30px'}} onClick={() => goHome()}><i class="fa-solid fa-house"></i></button>
+        </div>
+        <h2 style={{margin: '10px'}}>Scan a QR code:</h2>
+        <p class="scanDirections"><b>Directions:</b> 
+          <br/> 1. Get a QR code from a scouter.
+          <br/> 2. Hit the start scanning button
+          <br/> 3. Hold the code up to the webcam.
+          <br/> 4. Press the download button once it appears.
+          <br/> 5. Press reset to scan another QR code.
+        </p>
+        <button onClick={handleStartScan}>Start Scanning</button>
+        {showScanner && (
+            <QrReader
+              delay={300}
+              onError={handleError}
+              onResult={handleScan}
+              style={{ width: '100%', height: '100%'}}
+          />)}
+          <p>{scannedData}</p>
+          {downloadUrl && <a href={downloadUrl} download="qrData.csv">Download CSV</a>}
+          <button id="resetDownloadB" class="hidden" style={{margin: '10px', borderRadius: '30px', backgroundColor: 'rgb(226, 111, 111)'}} onClick={handleStopScan}>Reset</button>
       </div>
 
       <div class="page hidden page2" id="page2">
