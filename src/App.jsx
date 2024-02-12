@@ -9,7 +9,7 @@ import {QrReader} from 'react-qr-reader';
 function App() {
 
 
-  const [showQR, setShowQR] = useState(false);
+  const [showQR, setShowQR] = useState(true);
   const [finalData, setQrData] = useState(''); // Initialize qrData as a state variable
   
   //for pageQR (the page with the qr scanner)
@@ -20,7 +20,7 @@ function App() {
   const handleScan = (result, error) => {
     if (!!result) {
       setData(result?.text);
-      const csvBlob = new Blob([qrData], { type: 'text/csv' });
+      const csvBlob = new Blob([result?.text], { type: 'text/csv' });
       const fileUrl = URL.createObjectURL(csvBlob);
       setDownloadUrl(fileUrl);
       document.getElementById('resetDownloadB').classList.remove('hidden');
@@ -45,6 +45,26 @@ function App() {
   function goHome() {
     document.getElementById('page1').classList.remove('hidden');
     document.getElementById('pageQR').classList.add('hidden');
+    document.getElementById('page5').classList.add('hidden');
+  }
+
+  function restart() {
+    document.getElementById('page1').classList.remove('hidden');
+    document.getElementById('page5').classList.add('hidden');
+    qrData = "";
+    autoNoteData = "";
+    teleOpNoteData = "";
+    document.getElementById('startAuto').style.backgroundColor = "black";
+    document.getElementById('getRobotButton').classList.remove('hidden');
+    var prevMatchNum = document.getElementById('match').value;
+    document.getElementById('match').value = ++prevMatchNum;
+    document.getElementById("startMessage").innerHTML = "";
+    document.getElementById('nextPage1Button').classList.add('hidden');
+    autoArr = [];
+    teleArr = [];
+    //deselecting climb
+    climbStartTime = 'no climb';
+    document.getElementById('climbB').classList.remove('selected');
   }
 
   function goToScanner() {
@@ -54,7 +74,7 @@ function App() {
 
 
   //placeholders
-  const qrTitle = "Here it is!";
+  const qrTitle = "Scan me!";
   var qrData = "";
   var qrData1 = "";
   var qrData2 = "";
@@ -65,8 +85,11 @@ function App() {
   var trapCount = 0;
   var climbStartTime;
   var qrData4 = "";
-  
 
+  //for calculations
+  var autoArr = [];
+  var teleArr = [];
+  
   //used for timestamp tracking
   var startTime;
   var pickupTime;
@@ -164,6 +187,7 @@ function App() {
     document.getElementById('getRobotButton').classList.add('hidden');
     document.getElementById("startMessage").innerHTML = "You're scouting: <span id=teamNum>" + teamNum + "</span>";
     document.getElementById('nextPage1Button').classList.remove('hidden');
+    document.getElementById('reassignRobot').classList.remove('hidden');
   }
   
   function nextPage1() {
@@ -275,7 +299,6 @@ function App() {
     //log starting position
     startPos = startingPos;
     document.getElementById(startPos).classList.add('startPosSelected');
-    qrData2 = startTime + startPos;
   }
 
   function mobilityToggle(){
@@ -336,6 +359,7 @@ function App() {
       const timeToScore = (endTime - startTime) / 1000;
       console.log("preloaded piece scored in teleOp");
       teleOpNoteData += saveAsCSV([scoringLocation, timeToPickup, timeToScore]);
+      teleArr.push([scoringLocation, timeToPickup + timeToScore]);
       if(teleOpNoteData.substring(0, 9) == "undefined"){
         teleOpNoteData = teleOpNoteData.substring(9);
       };
@@ -360,6 +384,7 @@ function App() {
       if(heldNote && !document.getElementById('page2').classList.contains('hidden')){
         //auto
         autoNoteData += saveAsCSV([heldNote, scoringLocation, timeToPickup, timeToScore]);
+        autoArr.push([scoringLocation, timeToPickup + timeToScore]);
         if(autoNoteData.substring(0, 9) == "undefined"){
           autoNoteData = autoNoteData.substring(9);
         };
@@ -370,6 +395,7 @@ function App() {
       else if(heldNote == "preload" && !document.getElementById('page3').classList.contains('hidden')) {
         console.log("preloaded piece scored in teleOp");
         teleOpNoteData += saveAsCSV([scoringLocation, timeToPickup, timeToScore]);
+        teleArr.push([scoringLocation, timeToPickup + timeToScore]);
         if(teleOpNoteData.substring(0, 9) == "undefined"){
           teleOpNoteData = teleOpNoteData.substring(9);
         };
@@ -381,6 +407,7 @@ function App() {
         document.getElementById("trapB").classList.remove('lastSelected');
         //teleOp
         teleOpNoteData += saveAsCSV([scoringLocation, timeToPickup, timeToScore]);
+        teleArr.push([scoringLocation, timeToPickup + timeToScore]);
         if(teleOpNoteData.substring(0, 9) == "undefined"){
           teleOpNoteData = teleOpNoteData.substring(9);
         };
@@ -414,7 +441,7 @@ function App() {
   }
 
   function nextPage2() {
-    qrData2 = saveAsCSV([startPos]);
+    qrData2 = saveAsCSV([startPos, mobility]);
     console.log(qrData2);
     qrData = qrData1 + qrData2 + qrData3 + qrData4;
     console.log(qrData);
@@ -532,10 +559,44 @@ function App() {
       failsList == "no fails";
     };
 
+    //final calculations: notes scored in teleOp, notes scored in auto, total notes scored, average cycle time
+    console.log(autoArr);
+    console.log(teleArr);
+    var scoredInAuto = 0;
+    var scoredInTeleOp = 0;
+    var totalScored = 0;
+    var totalCycleTime = 0;
+    var avgCycleTime = 0;
+    var canScoreIn = [];
+    for (var i in autoArr) {
+      if(autoArr[i][0] != "dropped"){
+        if(!canScoreIn.includes(autoArr[i][0])){
+          canScoreIn.push(autoArr[i][0]);
+        }
+        scoredInAuto++;
+        totalCycleTime += autoArr[i][1];
+      };
+    };
+    for (var i in teleArr) {
+      if(teleArr[i][0] != "dropped"){
+        if(!canScoreIn.includes(teleArr[i][0])){
+          canScoreIn.push(teleArr[i][0]);
+        }
+        scoredInTeleOp++;
+        totalCycleTime += teleArr[i][1];
+      };
+    };
+    var canScoreInSpeaker = canScoreIn.includes('speaker');
+    var canScoreInAmp = canScoreIn.includes('amp');
+    var canScoreInTrap = canScoreIn.includes('trap');
+    totalScored = scoredInAuto + scoredInTeleOp;
+    avgCycleTime = totalCycleTime / totalScored;
+
     qrData4 = saveAsCSV([pickupMethod, climbStatus]) + saveAsCSV(["\"" + failsList + "\""]) + saveAsCSV(["\"" + otherInfo + "\""])
     qrData = qrData1 + qrData2 + qrData3 + qrData4;
+    qrData += saveAsCSV([scoredInAuto, scoredInTeleOp, totalScored, avgCycleTime, canScoreInSpeaker, canScoreInAmp, canScoreInTrap]);
     console.log(qrData);
-    qrData += saveAsCSV(["auto"]) + saveAsCSV([autoNoteData]) + saveAsCSV(["teleOp"]) + saveAsCSV([teleOpNoteData]);
+    // qrData += saveAsCSV(["auto"]) + saveAsCSV([autoNoteData]) + saveAsCSV(["teleOp"]) + saveAsCSV([teleOpNoteData]);
     
     document.getElementById('page5').classList.remove('hidden');
     document.getElementById('page4').classList.add('hidden');
@@ -584,12 +645,13 @@ function App() {
           </div>
           <div class="question">
             <label for="match">MATCH</label>
-            <input type="text" id="match" required></input>
+            <input type="number" id="match" required></input>
           </div>
         </form>
         <button class="bButton" id="getRobotButton" onClick={() => assignRobot()}>GET ROBOT</button>
         <h3 id="startMessage"></h3>
         <button class="bButton hidden" id="nextPage1Button" onClick={() => nextPage1()}>NEXT PAGE</button>
+        <button class="hidden" style={{margin: '10px', background: 'none'}} id="reassignRobot" onClick={() => assignRobot()}><i class="fa-solid fa-arrows-rotate fa-xl"></i></button>
       </div>
 
       <div class="page hidden pageQR" id="pageQR">
@@ -607,13 +669,13 @@ function App() {
         <button onClick={handleStartScan}>Start Scanning</button>
         {showScanner && (
             <QrReader
-              delay={300}
+              scanDelay={10}
               onError={handleError}
               onResult={handleScan}
               style={{ width: '100%', height: '100%'}}
           />)}
           <p>{scannedData}</p>
-          {downloadUrl && <a href={downloadUrl} download="qrData.csv">Download CSV</a>}
+          {downloadUrl && <a href={downloadUrl}>Download CSV</a>}
           <button id="resetDownloadB" class="hidden" style={{margin: '10px', borderRadius: '30px', backgroundColor: 'rgb(226, 111, 111)'}} onClick={handleStopScan}>Reset</button>
       </div>
 
@@ -745,16 +807,15 @@ function App() {
       </div>
 
       <div class="page hidden page5" id="page5">
-      <div class="topButtons">
-          <button class="back" onClick={() => lastPage4()}><i class="fa-solid fa-arrow-left"></i></button>
+        <div class="topButtons">
+            <button class="back" onClick={() => lastPage4()}><i class="fa-solid fa-arrow-left"></i></button>
         </div>
-        <button onClick={() => setShowQR(true)}>Generate QR Code</button>
         <QRModal
           show={showQR}
           title={qrTitle}
           data={finalData}
-          onDismiss={() => setShowQR(false)}
         />
+        <button class="restart" style={{position: 'absolute', top: '70%'}} onClick={() => restart()}>Restart &nbsp;<i class="fa-solid fa-arrows-rotate"></i></button>
       </div>
     </div>
   );
