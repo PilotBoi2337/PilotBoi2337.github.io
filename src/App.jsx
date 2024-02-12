@@ -596,7 +596,9 @@ function App() {
     qrData = qrData1 + qrData2 + qrData3 + qrData4;
     qrData += saveAsCSV([scoredInAuto, scoredInTeleOp, totalScored, avgCycleTime, canScoreInSpeaker, canScoreInAmp, canScoreInTrap]);
     console.log(qrData);
-    // qrData += saveAsCSV(["auto"]) + saveAsCSV([autoNoteData]) + saveAsCSV(["teleOp"]) + saveAsCSV([teleOpNoteData]);
+
+    //comment out the line below to hide variable data.
+    qrData += saveAsCSV(["auto"]) + saveAsCSV([autoNoteData]) + saveAsCSV(["teleOp"]) + saveAsCSV([teleOpNoteData]);
     
     document.getElementById('page5').classList.remove('hidden');
     document.getElementById('page4').classList.add('hidden');
