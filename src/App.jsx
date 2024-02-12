@@ -4,7 +4,7 @@ import QRModal from './QRModal';
 import blueField from './assets/blueField.png';
 import redField from './assets/redField.png';
 import logo from './assets/aembot_icon_vector.svg';
-import {QrReader} from 'react-qr-reader';
+// import {QrReader} from 'react-qr-reader';
 
 function App() {
 
@@ -16,19 +16,19 @@ function App() {
   const [showScanner, setShowScanner] = useState(false);
   const [scannedData, setData] = useState('No result');
 
-  const handleScan = scannedData => {
-    if (scannedData) {
-      setData(scannedData);
-    }
-  }
+  // const handleScan = scannedData => {
+  //   if (scannedData) {
+  //     setData(scannedData);
+  //   }
+  // }
 
-  const handleError = err => {
-    console.error(err);
-  }
+  // const handleError = err => {
+  //   console.error(err);
+  // }
 
-  const handleStartScan = () => {
-    setShowScanner(true);
-  }
+  // const handleStartScan = () => {
+  //   setShowScanner(true);
+  // }
 
 
   //placeholders
@@ -571,17 +571,7 @@ function App() {
         <button class="bButton hidden" id="nextPage1Button" onClick={() => nextPage1()}>NEXT PAGE</button>
       </div>
 
-      <div class="page pageQR" id="pageQR">
-      <button onClick={handleStartScan}>Start Scanning</button>
-      {showScanner && (
-          <QrReader
-            delay={300}
-            onError={handleError}
-            onResult={handleScan}
-            style={{ width: '100%' }}
-        />)}
-        <p>{scannedData}</p>
-      </div>
+      
 
       <div class="page hidden page2" id="page2">
         {/* auto (map) mobilityInAuto automatically checks if game piece is pressed*/}
