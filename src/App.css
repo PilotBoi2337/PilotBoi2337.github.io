@@ -246,6 +246,12 @@ select, .question input {
   margin: 8px;
 }
 
+.scored.lastSelected {
+  border-width: 3px;
+  border-style: solid;
+  border-color: rgb(155, 155, 155);
+}
+
 #speakerButton {
   margin-top: 20px;
 }
@@ -260,7 +266,7 @@ h3 {
 }
 
 .disabled {
-  background-color: rgb(105, 105, 105);
+  background-color: rgba(73, 73, 73, 0.53);
 }
 
 /* page 4 styles */
