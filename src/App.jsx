@@ -63,7 +63,7 @@ function App() {
     autoArr = [];
     teleArr = [];
     //deselecting climb
-    climbStartTime = 'no climb';
+    climbStartTime = 0;
     document.getElementById('climbB').classList.remove('selected');
   }
 
@@ -313,6 +313,16 @@ function App() {
     }
   }
 
+  function generateCSV() {
+    var csvString = document.getElementById('csvString').value;
+    console.log(csvString);
+    const csvBlob = new Blob([csvString], { type: 'text/csv' });
+    const fileUrl = URL.createObjectURL(csvBlob);
+    console.log(fileUrl);
+    document.getElementById('downloadB').href = fileUrl;
+    document.getElementById('downloadB').classList.remove('hidden');
+  }
+
   function logNote(note) {
     //a note is picked up
 
@@ -433,7 +443,7 @@ function App() {
       climbStartTime = (climbStart - startTime)/1000;
     } else {
       //deselecting climb
-      climbStartTime = 'no climb';
+      climbStartTime = 0;
       document.getElementById('climbB').classList.remove('selected');
     }
     
@@ -524,8 +534,8 @@ function App() {
   }
 
   function nextPage3() {
-    if(climbStartTime == undefined){climbStartTime = "noClimb";}
-    qrData3 = saveAsCSV(["endgame", climbStartTime]);
+    if(climbStartTime == undefined){climbStartTime = 0;}
+    qrData3 = saveAsCSV([climbStartTime]);
     console.log(qrData3);
     qrData = qrData1 + qrData2 + qrData3 + qrData4;
     console.log(qrData);
@@ -679,6 +689,14 @@ function App() {
           <p>{scannedData}</p>
           {downloadUrl && <a href={downloadUrl}>Download CSV</a>}
           <button id="resetDownloadB" class="hidden" style={{margin: '10px', borderRadius: '30px', backgroundColor: 'rgb(226, 111, 111)'}} onClick={handleStopScan}>Reset</button>
+          
+          <h2 style={{margin: '10px', marginTop: '30px'}}>Paste CSV string:</h2>
+          <div class="question">
+            <label for="csvString">Input CSV String here:</label>
+            <input type="text" id="csvString"></input>
+          </div>
+          <button onClick={() => generateCSV()}>Submit</button>
+          <a style={{margin: '10px', marginTop: '30px'}} class="hidden" id="downloadB">download CSV</a>
       </div>
 
       <div class="page hidden page2" id="page2">
@@ -817,7 +835,7 @@ function App() {
           title={qrTitle}
           data={finalData}
         />
-        <button class="restart" style={{position: 'absolute', top: '70%'}} onClick={() => restart()}>Restart &nbsp;<i class="fa-solid fa-arrows-rotate"></i></button>
+        <button class="restart" style={{marginTop: '100px'}} onClick={() => restart()}>Restart &nbsp;<i class="fa-solid fa-arrows-rotate"></i></button>
       </div>
     </div>
   );
