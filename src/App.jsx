@@ -4,6 +4,12 @@ import QRModal from './QRModal';
 import blueField from './assets/blueField.png';
 import redField from './assets/redField.png';
 import logo from './assets/aembot_icon_vector.svg';
+import pickupI from './assets/pickupI.png';
+import speakerI from './assets/speakerI.png';
+import ampI from './assets/ampI.png';
+import droppedI from './assets/droppedI.png';
+import trapI from './assets/trapI.png';
+import climbI from './assets/climbI.png';
 import {QrReader} from 'react-qr-reader';
 
 function App() {
@@ -622,7 +628,7 @@ function App() {
 
   return (
     <div className="app">
-      <div class="page page1" id="page1">
+      <div class="page hidden page1" id="page1">
         {/* event, role, name, match, robot */}
         <button class="goToScannerB" onClick={() => goToScanner()}><i class="fa-solid fa-qrcode"></i></button>
         <h1 style={{marginTop: '80px'}}>AEMScout</h1>
@@ -728,7 +734,7 @@ function App() {
         <button class="scored" id="mobilityButton" onClick={() => mobilityToggle()}>Mobility</button>
       </div>
 
-      <div class="page hidden page3" id="page3">
+      <div class="page  page3" id="page3">
         {/* teleop (speaker, amp, pickup, drop, trap, climb) */}
         <div class="topButtons">
           <button class="back" onClick={() => lastPage2()}><i class="fa-solid fa-arrow-left"></i></button>
@@ -736,14 +742,14 @@ function App() {
           <button class="forward" onClick={() => nextPage3()}><i class="fa-solid fa-arrow-right"></i></button>
         </div>
         
-        <button class="scored" id="pickUpB" onClick={() => logNote()}>Pickup</button>
-        <button class="scored disabled" id="speakerB" onClick={() => scoredNote("speaker")}>Scored in speaker</button>
-        <button class="scored disabled" id="ampB" onClick={() => scoredNote("amp")}>Scored in Amp</button>
-        <button class="scored disabled" id="droppedB" onClick={() => scoredNote("dropped")}>Dropped</button>
-        <button class="scored disabled" id="trapB" onClick={() => scoredNote("trap")}>Trap</button>
-
-        <button class="scored" id="climbB" onClick={() => climb()}>Climb</button>
-        
+        <div class="iconBContainer">
+          <button class="iconB" id="pickUpB" onClick={() => logNote()}><img class="teleOpIcon" src={pickupI}></img>Pickup</button>
+          <button class="iconB disabled" id="speakerB" onClick={() => scoredNote("speaker")}><img class="teleOpIcon" src={speakerI}></img>Speaker</button>
+          <button class="iconB disabled" id="droppedB" onClick={() => scoredNote("dropped")}><img class="teleOpIcon" src={droppedI}></img>Dropped</button>
+          <button class="iconB disabled" id="ampB" onClick={() => scoredNote("amp")}><img class="teleOpIcon" src={ampI}></img>Amp</button>
+          <button class="iconB disabled" id="trapB" onClick={() => scoredNote("trap")}><img class="teleOpIcon" src={trapI}></img>Trap</button>
+          <button class="iconB" id="climbB" onClick={() => climb()}><img class="teleOpIcon" src={climbI}></img>Climb</button>
+        </div>
       </div>
 
       <div class="page hidden page4" id="page4">
