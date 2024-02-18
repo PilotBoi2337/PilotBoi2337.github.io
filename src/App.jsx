@@ -696,7 +696,7 @@ function App() {
           {downloadUrl && <a href={downloadUrl}>Download CSV</a>}
           <button id="resetDownloadB" class="hidden" style={{margin: '10px', borderRadius: '30px', backgroundColor: 'rgb(226, 111, 111)'}} onClick={handleStopScan}>Reset</button>
           
-          <h2 style={{margin: '10px', marginTop: '30px'}}>Paste CSV string:</h2>
+          <h2 style={{margin: '10px', marginTop: '30px'}}>Paste a CSV string:</h2>
           <div class="question">
             <label for="csvString">Input CSV String here:</label>
             <input type="text" id="csvString"></input>
