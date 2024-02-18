@@ -117,6 +117,11 @@ select, .question input {
   width: 100%;
 }
 
+#climbB.iconB {
+  position: relative;
+  top: 0.5%;
+}
+
 #getRobotButton {
   margin-top: 15px;
 }
