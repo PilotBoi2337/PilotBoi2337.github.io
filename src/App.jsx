@@ -78,6 +78,16 @@ function App() {
     document.getElementById('page1').classList.add('hidden');
   }
 
+  function countTeleOp() {
+    var scoredInTeleOp = 0;
+    for (var i in teleArr) {
+      if(teleArr[i][0] != "dropped"){
+        scoredInTeleOp++;
+      };
+    };
+    document.getElementById('scoredInTeleOp').innerText = scoredInTeleOp;
+    return scoredInTeleOp;
+  }
 
   //placeholders
   const qrTitle = "Scan me!";
@@ -440,6 +450,7 @@ function App() {
       document.getElementById('droppedB').classList.add('disabled');
       document.getElementById('trapB').classList.add('disabled');
     }
+    countTeleOp();
   }
 
   function climb() {
@@ -480,6 +491,8 @@ function App() {
       document.getElementById('droppedB').classList.remove('disabled');
       document.getElementById('trapB').classList.remove('disabled');
     }
+
+    countTeleOp();
   }
 
   function lastPage2() {
@@ -534,6 +547,8 @@ function App() {
       document.getElementById('start3').classList.add('redArr');
       document.getElementById('start4').classList.add('redArr');
     }
+
+    countTeleOp();
 
     document.getElementById('page2').classList.remove('hidden');
     document.getElementById('page3').classList.add('hidden');
@@ -738,7 +753,7 @@ function App() {
         {/* teleop (speaker, amp, pickup, drop, trap, climb) */}
         <div class="topButtons">
           <button class="back" onClick={() => lastPage2()}><i class="fa-solid fa-arrow-left"></i></button>
-          <h3>TeleOp</h3>
+          <h3>TeleOp: <span id="scoredInTeleOp">0</span></h3>
           <button class="forward" onClick={() => nextPage3()}><i class="fa-solid fa-arrow-right"></i></button>
         </div>
         
