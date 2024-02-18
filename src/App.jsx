@@ -628,7 +628,7 @@ function App() {
 
   return (
     <div className="app">
-      <div class="page hidden page1" id="page1">
+      <div class="page page1" id="page1">
         {/* event, role, name, match, robot */}
         <button class="goToScannerB" onClick={() => goToScanner()}><i class="fa-solid fa-qrcode"></i></button>
         <h1 style={{marginTop: '80px'}}>AEMScout</h1>
@@ -734,7 +734,7 @@ function App() {
         <button class="scored" id="mobilityButton" onClick={() => mobilityToggle()}>Mobility</button>
       </div>
 
-      <div class="page  page3" id="page3">
+      <div class="page hidden page3" id="page3">
         {/* teleop (speaker, amp, pickup, drop, trap, climb) */}
         <div class="topButtons">
           <button class="back" onClick={() => lastPage2()}><i class="fa-solid fa-arrow-left"></i></button>
