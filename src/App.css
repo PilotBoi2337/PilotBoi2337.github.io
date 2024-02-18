@@ -48,7 +48,7 @@
 /* page 1 styles */
 
 .logo {
-  width: 30%;
+  width: 120px;
   margin-bottom: 5%;
 }
 
@@ -368,4 +368,8 @@ input[type="checkbox"] {
   border-radius: 30px;
   font-weight: bold;
   background-color: rgba(39, 38, 38, 0.425);
+}
+
+@media (min-width: 380px){
+
 }
