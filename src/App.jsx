@@ -234,8 +234,10 @@ function App() {
       document.getElementById('blueField').style.display = 'block';
       document.getElementById('b1').classList.remove('redArr');
       document.getElementById('b2').classList.remove('redArr');
+      document.getElementById('b3').classList.remove('redArr');
       document.getElementById('b1').classList.add('blueArr');
       document.getElementById('b2').classList.add('blueArr');
+      document.getElementById('b3').classList.add('blueArr');
 
       document.getElementById('start1').classList.remove('redArr');
       document.getElementById('start2').classList.remove('redArr');
@@ -251,8 +253,10 @@ function App() {
       document.getElementById('redField').style.display = 'block';
       document.getElementById('b1').classList.remove('blueArr');
       document.getElementById('b2').classList.remove('blueArr');
+      document.getElementById('b3').classList.remove('blueArr');
       document.getElementById('b1').classList.add('redArr');
       document.getElementById('b2').classList.add('redArr');
+      document.getElementById('b3').classList.add('redArr');
 
       document.getElementById('start1').classList.remove('blueArr');
       document.getElementById('start2').classList.remove('blueArr');
@@ -263,7 +267,6 @@ function App() {
       document.getElementById('start3').classList.add('redArr');
       document.getElementById('start4').classList.add('redArr');
     }
-
     //unhiding the notes
     document.getElementById('b1').classList.remove('hidden');
     document.getElementById('b2').classList.remove('hidden');
@@ -405,11 +408,39 @@ function App() {
       const scoringLocation = place;
       const endTime = new Date();
       const timeToScore = (endTime - pickupTime) / 1000;
+      const role = document.getElementById('role').value;
       console.log("heldNote: " + heldNote);
       console.log(!document.getElementById('page3').classList.contains('hidden'));
       if(heldNote && !document.getElementById('page2').classList.contains('hidden')){
         //auto
-        autoNoteData += saveAsCSV([heldNote, scoringLocation, timeToPickup, timeToScore]);
+        var heldNoteID;
+        var heldNoteNum = heldNote[1];
+        if(heldNote == "preload"){heldNoteID = 0;}
+        else if(heldNote[0] == "b"){
+          //always the same
+          if(role[0] == "b"){heldNoteID = "-" + heldNoteNum;}
+          else if(role[0] == "r"){heldNoteID = heldNoteNum}
+        }
+        else if(heldNote[0] == "t"){
+          if(role[0] == "b"){
+            //left arrangement
+            if(heldNoteNum == "1"){heldNoteID = 4;}
+            if(heldNoteNum == "2"){heldNoteID = 5;}
+            if(heldNoteNum == "3"){heldNoteID = 6;}
+            if(heldNoteNum == "4"){heldNoteID = 7;}
+            if(heldNoteNum == "5"){heldNoteID = 8;}
+          }
+          else if(role[0] == "r"){
+            //right arrangement
+            if(heldNoteNum == "1"){heldNoteID = 8;}
+            if(heldNoteNum == "2"){heldNoteID = 7;}
+            if(heldNoteNum == "3"){heldNoteID = 6;}
+            if(heldNoteNum == "4"){heldNoteID = 5;}
+            if(heldNoteNum == "5"){heldNoteID = 4;}
+          }
+        }
+        
+        autoNoteData += saveAsCSV([heldNoteID, scoringLocation, timeToPickup, timeToScore]);
         autoArr.push([scoringLocation, timeToPickup + timeToScore]);
         if(autoNoteData.substring(0, 9) == "undefined"){
           autoNoteData = autoNoteData.substring(9);
@@ -518,8 +549,10 @@ function App() {
       document.getElementById('blueField').style.display = 'block';
       document.getElementById('b1').classList.remove('redArr');
       document.getElementById('b2').classList.remove('redArr');
+      document.getElementById('b3').classList.remove('redArr');
       document.getElementById('b1').classList.add('blueArr');
       document.getElementById('b2').classList.add('blueArr');
+      document.getElementById('b3').classList.add('blueArr');
 
       document.getElementById('start1').classList.remove('redArr');
       document.getElementById('start2').classList.remove('redArr');
@@ -535,8 +568,10 @@ function App() {
       document.getElementById('redField').style.display = 'block';
       document.getElementById('b1').classList.remove('blueArr');
       document.getElementById('b2').classList.remove('blueArr');
+      document.getElementById('b3').classList.remove('blueArr');
       document.getElementById('b1').classList.add('redArr');
       document.getElementById('b2').classList.add('redArr');
+      document.getElementById('b3').classList.add('redArr');
 
       document.getElementById('start1').classList.remove('blueArr');
       document.getElementById('start2').classList.remove('blueArr');
@@ -579,18 +614,26 @@ function App() {
     var pickupMethod = document.getElementById('pickUpMethods').value;
     var climbStatus = document.getElementById('climbStatus').value;
     var otherInfo = document.getElementById('otherInfo').value;
-    //compile fails list
-    var fails = document.querySelector('fieldSet');
-    var failsSelected = Array.from(fails.querySelectorAll('input[type="checkbox"]:checked')).map(input => input.value);
-    var failsList = "";
-    for(var i in failsSelected) {
-      failsList += failsSelected[i] + ", ";
-    };
-    if(failsList == "undefined"){
-      failsList == "no fails";
-    };
 
-    //final calculations: notes scored in teleOp, notes scored in auto, total notes scored, average cycle time
+    //compile fails list into a single string
+    // var fails = document.querySelector('fieldSet');
+    // var failsSelected = Array.from(fails.querySelectorAll('input[type="checkbox"]:checked')).map(input => input.value);
+    // var failsList = "";
+    // for(var i in failsSelected) {
+    //   failsList += failsSelected[i] + ", ";
+    // };
+    // if(failsList == "undefined"){
+    //   failsList == "no fails";
+    // };
+    
+    //compiles fails list into an array 
+    var fails = document.querySelector('fieldset');
+    var checkboxes = Array.from(fails.querySelectorAll('input[type="checkbox"]'));
+    var failsList = checkboxes.map(input => input.checked);
+
+    console.log(failsList);
+
+    //final calculations: notes scored in teleOp, notes scored in auto, total notes scored, average cycle time, total traps
     console.log(autoArr);
     console.log(teleArr);
     var scoredInAuto = 0;
@@ -599,6 +642,7 @@ function App() {
     var totalCycleTime = 0;
     var avgCycleTime = 0;
     var canScoreIn = [];
+    var totalTraps = 0;
     for (var i in autoArr) {
       if(autoArr[i][0] != "dropped"){
         if(!canScoreIn.includes(autoArr[i][0])){
@@ -613,6 +657,7 @@ function App() {
         if(!canScoreIn.includes(teleArr[i][0])){
           canScoreIn.push(teleArr[i][0]);
         }
+        if(teleArr[i][0] == "trap"){totalTraps++};
         scoredInTeleOp++;
         totalCycleTime += teleArr[i][1];
       };
@@ -623,9 +668,11 @@ function App() {
     totalScored = scoredInAuto + scoredInTeleOp;
     avgCycleTime = totalCycleTime / totalScored;
 
-    qrData4 = saveAsCSV([pickupMethod, climbStatus]) + saveAsCSV(["\"" + failsList + "\""]) + saveAsCSV(["\"" + otherInfo + "\""])
+    //qrData4 = saveAsCSV([pickupMethod, climbStatus]) + saveAsCSV(["\"" + failsList + "\""]) + saveAsCSV(["\"" + otherInfo + "\""])
+    
+    qrData4 = saveAsCSV([pickupMethod, climbStatus]) + saveAsCSV(failsList) + saveAsCSV(["\"" + otherInfo + "\""])
     qrData = qrData1 + qrData2 + qrData3 + qrData4;
-    qrData += saveAsCSV([scoredInAuto, scoredInTeleOp, totalScored, avgCycleTime, canScoreInSpeaker, canScoreInAmp, canScoreInTrap]);
+    qrData += saveAsCSV([scoredInAuto, scoredInTeleOp, totalScored, avgCycleTime, canScoreInSpeaker, canScoreInAmp, canScoreInTrap, totalTraps]);
     console.log(qrData);
 
     //comment out the line below to hide variable data.

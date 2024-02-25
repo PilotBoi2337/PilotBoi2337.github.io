@@ -233,14 +233,22 @@ select, .question input {
   top: 64%;
   left: 28%;
 }
+#b3.blueArr {
+  top: 64%;
+  left: 45.25%;
+}
 
 #b1.redArr {
   top: 64%;
-  left: 62.5%;
+  left: 79.5%;
 }
 #b2.redArr {
   top: 64%;
-  left: 79.5%;
+  left: 62.5%;
+}
+#b3.redArr {
+  top: 64%;
+  left: 45.25%;
 }
 
 #b3 {
@@ -372,4 +380,7 @@ input[type="checkbox"] {
 
 @media (min-width: 380px){
 
+  .fieldIMG {
+
+  }
 }
