@@ -71,6 +71,20 @@ function App() {
     //deselecting climb
     climbStartTime = 0;
     document.getElementById('climbB').classList.remove('selected');
+    //reseting mobility
+    mobility = "no";
+    document.getElementById('mobilityButton').classList.remove('selected');
+    // Reset pickUpMethods selection to 'None'
+    document.getElementById('pickUpMethods').value = 'none';
+    // Reset climbStatus selection to 'None'
+    document.getElementById('climbStatus').value = 'no attempt';
+    // Uncheck all checkboxes in the Common Fails List (CFL)
+    const checkboxes = document.querySelectorAll('.CFL input[type=checkbox]');
+    checkboxes.forEach(checkbox => {
+      checkbox.checked = false;
+    });
+    // Clear the otherInfo textarea
+    document.getElementById('otherInfo').value = '';
   }
 
   function goToScanner() {
