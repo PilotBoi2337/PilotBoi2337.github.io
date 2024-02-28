@@ -870,7 +870,7 @@ function App() {
               <input type="checkbox" id="fail2" name="fail2" value="died"></input>
             </div>
             <div class="fail">
-              <label for="fail1">Tipped</label>
+              <label for="fail3">Tipped</label>
               <input type="checkbox" id="fail3" name="fail3" value="tipped"></input>
             </div>
             <div class="fail">
