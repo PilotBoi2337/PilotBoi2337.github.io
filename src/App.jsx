@@ -115,6 +115,7 @@ function App() {
   var trapCount = 0;
   var climbStartTime;
   var qrData4 = "";
+  var eventName;
 
   //for calculations
   var autoArr = [];
@@ -139,6 +140,10 @@ function App() {
       data = data.substring(0, data.length - 2);
     }
     return data;
+  }
+
+  function padNumber(number, length) {
+    return String(number).padStart(length, '0');
   }
 
   async function assignRobot() {
@@ -223,12 +228,34 @@ function App() {
   function nextPage1() {
     //save data
     const eventKey = document.getElementById('eventKey').value;
+    //2024Clackm, 2024Yakima, 2024Wilson, 2024PNWDis, 2024Worlds
+    switch(eventKey) {
+      case "2023pncmp":
+        eventName = "2023PNWDiscmp";
+        break;
+      case "2024orore":
+        eventName = "2024Clackmcmp";
+        break;
+      case "2024wayak":
+        eventName = "2024Yakimacmp";
+        break;
+      case "2024orwil":
+        eventName = "2024Wilsoncmp";
+        break;
+      case "2024pncmp":
+        eventName = "2024PNWDiscmp";
+        break;
+      case "Worlds":
+        eventName = "2024Worldscmp";
+    }
+    //UPDATE Worlds key later
     const role = document.getElementById('role').value;
-    const matchNum = document.getElementById('match').value;
-    const scouterInitials = document.getElementById('initials').value;
-    const teamNum = document.getElementById('teamNum').innerText;
+    const matchNum = padNumber(document.getElementById('match').value, 2);
+    var scouterInitials = document.getElementById('initials').value;
+    scouterInitials = scouterInitials.substring(0, 2); //makes sure saved initial is only two characters
+    const teamNum = padNumber(document.getElementById('teamNum').innerText, 4);
     //console.log(eventKey);
-    qrData1 = saveAsCSV([eventKey, role, scouterInitials, matchNum, teamNum]);
+    qrData1 = saveAsCSV([eventName, role, scouterInitials, matchNum, teamNum]);
     //console.log(qrData1);
     if(qrData1.substring(0, 9) == "undefined"){
       qrData1 = qrData1.substring(9);
@@ -718,7 +745,7 @@ function App() {
                 <option value="2024orore">Clackamas</option>
                 <option value="2024wayak">SunDome</option>
                 <option value="2024orwil">Wilsonville</option>
-                <option value="DCMP">DCMP</option>
+                <option value="2024pncmp">DCMP</option>
                 <option value="Worlds">Worlds</option>
             </select>
           </div>
