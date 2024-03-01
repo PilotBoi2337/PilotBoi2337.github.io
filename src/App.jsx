@@ -15,6 +15,12 @@ import {QrReader} from 'react-qr-reader';
 
 function App() {
 
+  var lastUpdated = localStorage.getItem('lastUpdated');
+
+  useEffect(() => {
+    document.getElementById("lastUpdated").innerHTML = lastUpdated;
+  })
+
   const [showQR, setShowQR] = useState(true);
   const [finalData, setQrData] = useState(''); // Initialize qrData as a state variable
   
