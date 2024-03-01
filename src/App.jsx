@@ -741,7 +741,7 @@ function App() {
             <label for="event">EVENT</label>
             <select name="event" id="eventKey" required>
                 {/* get event_key from URL */}
-                <option value="2023pncmp">2023 DCMP</option>
+                <option value="2023pncmp" disabled>2023 DCMP</option>
                 <option value="2024orore">Clackamas</option>
                 <option value="2024wayak">SunDome</option>
                 <option value="2024orwil">Wilsonville</option>
