@@ -61,7 +61,6 @@
   margin: 10px;
   padding: 5px;
   width: 300px;
-  
 }
 
 .question label {
@@ -126,8 +125,23 @@ select, .question input {
   margin-top: 15px;
 }
 
+#reassignRobot p {
+  font-size: 2rem;
+  margin: 0;
+}
+
+#lastUpdated {
+  font-size: 0.8rem;
+  margin: 0;
+}
+
 #nextPage1Button {
   margin-top: 15px;
+}
+
+.removeMargin {
+  margin: 0;
+  margin-top: 10px;
 }
 
 /* page 2 styles */
@@ -141,6 +155,10 @@ select, .question input {
   margin-top: 15px;
   margin-bottom: 15px;
   height: 5vh;
+}
+
+.topButtons p {
+  margin: 0;
 }
 
 .back, .forward {

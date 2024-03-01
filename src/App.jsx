@@ -1,5 +1,6 @@
-import { useState } from 'react'
-import './App.css'
+import { useState } from 'react';
+import './App.css';
+import { useEffect } from 'react';
 import QRModal from './QRModal';
 import blueField from './assets/blueField.png';
 import redField from './assets/redField.png';
@@ -14,10 +15,11 @@ import {QrReader} from 'react-qr-reader';
 
 function App() {
 
-
   const [showQR, setShowQR] = useState(true);
   const [finalData, setQrData] = useState(''); // Initialize qrData as a state variable
   
+  var lastUpdated = localStorage.getItem('lastUpdated');
+
   //for pageQR (the page with the qr scanner)
   const [showScanner, setShowScanner] = useState(false);
   const [scannedData, setData] = useState('No result');
@@ -83,6 +85,8 @@ function App() {
     checkboxes.forEach(checkbox => {
       checkbox.checked = false;
     });
+    //hide reassign robot button
+    document.getElementById('reassignRobot').classList.add('hidden');
     // Clear the otherInfo textarea
     document.getElementById('otherInfo').value = '';
   }
@@ -167,6 +171,10 @@ function App() {
           schedule = await response.json();
           console.log(schedule);
           localStorage.setItem("schedule", JSON.stringify(schedule));
+          var now = new Date().toLocaleString();
+          lastUpdated = now;
+          localStorage.setItem("lastUpdated", lastUpdated);
+          document.getElementById('lastUpdated').innerHTML = lastUpdated;
         } else {
           // handle errors
           console.error('Failed to fetch schedule:', response.status, response.statusText);
@@ -189,6 +197,10 @@ function App() {
         schedule = await response.json();
         console.log(schedule);
         localStorage.setItem("schedule", JSON.stringify(schedule));
+        var now = new Date().toLocaleString();
+        lastUpdated = now;
+        localStorage.setItem("lastUpdated", lastUpdated);
+        document.getElementById('lastUpdated').innerHTML = lastUpdated;
       } else {
         // handle errors
         console.error('Failed to fetch schedule:', response.status, response.statusText);
@@ -203,6 +215,259 @@ function App() {
     var correctMatch;
     for(var match of schedule){
       if ((match.match_number == matchNum) && match.comp_level == "qm"){
+        //manually uploading the schedule; corrects the correct match
+        // console.log(matchNum);
+        // switch(parseInt(matchNum)) {
+        //   case 1:
+        //     console.log("Working");
+        //     match.alliances.blue.team_keys = ['frc9600', 'frc2733' , 'frc4662'];
+        //     match.alliances.red.team_keys = ['frc6443', 'frc1540' , 'frc847'];
+        //     break;
+        //   case 2:
+        //     match.alliances.blue.team_keys = ['frc2811', 'frc2926' , 'frc2557'];
+        //     match.alliances.red.team_keys = ['frc2550', 'frc' , 'frc'];
+        //     break;    
+        //   case 3:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;          
+        //   case 4:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;    
+        //   case 5:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;    
+        //   case 6:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;    
+        //   case 7:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break; 
+        //   case 8:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;     
+        //   case 9:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break; 
+        //   case 10:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;    
+        //   case 1:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;
+        //   case 2:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;    
+        //   case 3:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;          
+        //   case 4:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;    
+        //   case 5:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;    
+        //   case 6:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;    
+        //   case 7:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break; 
+        //   case 8:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;     
+        //   case 9:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break; 
+        //   case 20:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;    
+        //   case 1:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;
+        //   case 2:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;    
+        //   case 3:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;          
+        //   case 4:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;    
+        //   case 5:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;    
+        //   case 6:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;    
+        //   case 7:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break; 
+        //   case 8:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;     
+        //   case 9:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break; 
+        //   case 30:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;    
+        //   case 1:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;
+        //   case 2:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;    
+        //   case 3:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;          
+        //   case 4:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;    
+        //   case 5:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;    
+        //   case 6:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;    
+        //   case 7:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break; 
+        //   case 8:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;     
+        //   case 9:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break; 
+        //   case 40:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;    
+        //   case 1:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;
+        //   case 2:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;    
+        //   case 3:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;          
+        //   case 4:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;    
+        //   case 5:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;    
+        //   case 6:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;    
+        //   case 7:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break; 
+        //   case 8:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;     
+        //   case 9:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break; 
+        //   case 50:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;    
+        //   case 1:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;
+        //   case 2:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;    
+        //   case 3:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;          
+        //   case 4:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;    
+        //   case 5:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;    
+        //   case 6:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;    
+        //   case 7:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break; 
+        //   case 8:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;     
+        //   case 9:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break; 
+        //   case 60:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;   
+        //   case 61:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break;     
+        //   case 62:
+        //     match.alliances.blue.team_keys = ['frc', 'frc' , 'frc'];
+        //     match.alliances.red.team_keys = ['frc', 'frc' , 'frc'];
+        //     break; 
+        // }
         correctMatch = match;
         break;
       }
@@ -225,6 +490,36 @@ function App() {
     document.getElementById('reassignRobot').classList.remove('hidden');
   }
   
+  async function refreshSchedule() {
+    var eventKey = document.getElementById('eventKey').value;
+    var schedule;
+    // get schedule from blueAlliance
+    const myHeaders = new Headers();
+    myHeaders.append("X-TBA-Auth-Key", "sFqG7OPSwFgG7Qudvkr4CTa21jcnCg5EA9EzFE3KGhGTunEuPWXaaMfp77NMJhFF");
+    
+    const requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow'
+    };
+    const response = await fetch(`https://www.thebluealliance.com/api/v3/event/${eventKey}/matches`, requestOptions);
+    if (response.ok) {
+      schedule = await response.json();
+      console.log(schedule);
+      localStorage.setItem("schedule", JSON.stringify(schedule));
+      var now = new Date().toLocaleString();
+      lastUpdated = now;
+      localStorage.setItem("lastUpdated", lastUpdated);
+      document.getElementById('lastUpdated').innerHTML = lastUpdated;
+    } else {
+      // handle errors
+      console.error('Failed to fetch schedule:', response.status, response.statusText);
+      document.getElementById('startMessage').innerHTML = "Failed to retrieve match schedule!";
+      return;
+    }
+
+  }
+
   function nextPage1() {
     //save data
     const eventKey = document.getElementById('eventKey').value;
@@ -535,8 +830,6 @@ function App() {
       climbStartTime = 0;
       document.getElementById('climbB').classList.remove('selected');
     }
-    
-
   }
 
   function nextPage2() {
@@ -733,7 +1026,7 @@ function App() {
     <div className="app">
       <div class="page page1" id="page1">
         {/* event, role, name, match, robot */}
-        <button class="goToScannerB" onClick={() => goToScanner()}><i class="fa-solid fa-qrcode"></i></button>
+        <button class="goToScannerB" onClick={() => refreshSchedule()}><p>&#8635;</p></button>
         <h1 style={{marginTop: '80px'}}>AEMScout</h1>
         <img class="logo" src={logo}></img>
         <form>
@@ -772,7 +1065,8 @@ function App() {
         <button class="bButton" id="getRobotButton" onClick={() => assignRobot()}>GET ROBOT</button>
         <h3 id="startMessage"></h3>
         <button class="bButton hidden" id="nextPage1Button" onClick={() => nextPage1()}>NEXT PAGE</button>
-        <button class="hidden" style={{margin: '10px', background: 'none'}} id="reassignRobot" onClick={() => assignRobot()}><i class="fa-solid fa-arrows-rotate fa-xl"></i></button>
+        <button class="hidden" style={{margin: '10px', background: 'none'}} id="reassignRobot" onClick={() => assignRobot()}><p>&#8634;</p></button>
+        <p class="removeMargin">Last Updated: <span id="lastUpdated"></span></p>
       </div>
 
       <div class="page hidden pageQR" id="pageQR">
@@ -811,9 +1105,9 @@ function App() {
       <div class="page hidden page2" id="page2">
         {/* auto (map) mobilityInAuto automatically checks if game piece is pressed*/}
         <div class="topButtons">
-          <button class="back" onClick={() => lastPage1()}><i class="fa-solid fa-arrow-left"></i></button>
+          <button class="back" onClick={() => lastPage1()}><p>&#8592;</p></button>
           <button id="startAuto" onClick={() => startAuto()}>start auto</button>
-          <button class="forward" onClick={() => nextPage2()}><i class="fa-solid fa-arrow-right"></i></button>
+          <button class="forward" onClick={() => nextPage2()}><p> &#8594;</p></button>
         </div>
         <div class="imgContainer">
           <img class="fieldIMG" id="blueField" src={blueField} alt="Field image" />
@@ -840,9 +1134,9 @@ function App() {
       <div class="page hidden page3" id="page3">
         {/* teleop (speaker, amp, pickup, drop, trap, climb) */}
         <div class="topButtons">
-          <button class="back" onClick={() => lastPage2()}><i class="fa-solid fa-arrow-left"></i></button>
+          <button class="back" onClick={() => lastPage2()}><p>&#8592;</p></button>
           <h3>TeleOp: <span id="scoredInTeleOp">0</span></h3>
-          <button class="forward" onClick={() => nextPage3()}><i class="fa-solid fa-arrow-right"></i></button>
+          <button class="forward" onClick={() => nextPage3()}><p> &#8594;</p></button>
         </div>
         
         <div class="iconBContainer">
@@ -858,9 +1152,9 @@ function App() {
       <div class="page hidden page4" id="page4">
         {/* fouls, fail(climb), CFL (common fail list), Other, Pickup? */}
         <div class="topButtons">
-          <button class="back" onClick={() => lastPage3()}><i class="fa-solid fa-arrow-left"></i></button>
+          <button class="back" onClick={() => lastPage3()}><p>&#8592;</p></button>
           <h3>Post Match</h3>
-          <button class="forward" onClick={() => nextPage4()}><i class="fa-solid fa-arrow-right"></i></button>
+          <button class="forward" onClick={() => nextPage4()}><p> &#8594;</p></button>
         </div>
 
         <form>
@@ -937,14 +1231,14 @@ function App() {
 
       <div class="page hidden page5" id="page5">
         <div class="topButtons">
-            <button class="back" onClick={() => lastPage4()}><i class="fa-solid fa-arrow-left"></i></button>
+            <button class="back" onClick={() => lastPage4()}><p>&#8592;</p></button>
         </div>
         <QRModal
           show={showQR}
           title={qrTitle}
           data={finalData}
         />
-        <button class="restart" style={{marginTop: '100px'}} onClick={() => restart()}>Restart &nbsp;<i class="fa-solid fa-arrows-rotate"></i></button>
+        <button class="restart" style={{marginTop: '100px'}} onClick={() => restart()}>Restart &nbsp;&#8634;</button>
       </div>
     </div>
   );
