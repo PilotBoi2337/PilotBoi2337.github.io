@@ -397,12 +397,15 @@ input[type="checkbox"] {
 }
 
 @media (orientation: landscape){
-  html, body {margin: 0; height: 100%; overflow: hidden}
+  html, body {
+    margin: 0; 
+    height: 100%; 
+    overflow: hidden;
+
+  }
 
   f#root {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: .1rem;
+    max-width: 100%;
     text-align: center;
     color: #fff
   }
@@ -823,11 +826,17 @@ input[type="checkbox"] {
   body {
     margin: 0;
     display: flex;
-    place-items: center;
+    /* place-items: center; */
+    justify-content: center;
+    align-items: center;
     min-width: 320px;
     min-height: 100vh;
     color: #fff
     
+  }
+
+  #root {
+    justify-content: center;
   }
   
   h1 {

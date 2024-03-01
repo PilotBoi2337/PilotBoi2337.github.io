@@ -872,8 +872,28 @@ function App() {
     const matchNum = document.getElementById('match').value;
     const scouterInitials = document.getElementById('initials').value;
     const teamNum = document.getElementById('teamNum').innerText;
+    //2024Clackm, 2024Yakima, 2024Wilson, 2024PNWDis, 2024Worlds
+    switch(eventKey) {
+      case "2023pncmp":
+        eventName = "2023PNWDiscmp";
+        break;
+      case "2024orore":
+        eventName = "2024Clackmcmp";
+        break;
+      case "2024wayak":
+        eventName = "2024Yakimacmp";
+        break;
+      case "2024orwil":
+        eventName = "2024Wilsoncmp";
+        break;
+      case "2024pncmp":
+        eventName = "2024PNWDiscmp";
+        break;
+      case "Worlds":
+        eventName = "2024Worldscmp";
+    }
     //console.log(eventKey);
-    qrData1 = saveAsCSV([eventKey, role, scouterInitials, matchNum, teamNum]);
+    qrData1 = saveAsCSV([eventName, role, scouterInitials, matchNum, teamNum]);
     //console.log(qrData1);
     if(qrData1.substring(0, 9) == "undefined"){
       qrData1 = qrData1.substring(9);
