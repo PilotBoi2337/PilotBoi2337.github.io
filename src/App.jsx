@@ -137,7 +137,7 @@ function App() {
   var heldNote;
   var timeToPickup;
 
-  function saveAsCSV(array){
+  function saveAsCSV(array) {
     var data;
     for(var index in array){
       data += array[index] + ",";
@@ -634,6 +634,8 @@ function App() {
     document.getElementById('start2').classList.remove('startPosSelected');
     document.getElementById('start3').classList.remove('startPosSelected');
     document.getElementById('start4').classList.remove('startPosSelected');
+
+    localStorage.setItem('qrData1', qrData1);
   }
 
   function lastPage1() {
@@ -824,6 +826,8 @@ function App() {
       document.getElementById('trapB').classList.add('disabled');
     }
     countTeleOp();
+    localStorage.setItem('teleArr', JSON.stringify(teleArr));
+    localStorage.setItem('autoArr', JSON.stringify(teleArr));
   }
 
   function climb() {
@@ -864,6 +868,9 @@ function App() {
     }
 
     countTeleOp();
+
+    localStorage.setItem('qrData2', qrData2);
+    localStorage.setItem('autoNoteData', autoNoteData);
   }
 
   function lastPage2() {
@@ -957,6 +964,8 @@ function App() {
     console.log(qrData);
     document.getElementById('page4').classList.remove('hidden');
     document.getElementById('page3').classList.add('hidden');
+    localStorage.setItem('qrData3', qrData3);
+    localStorage.setItem('teleOpNoteData', teleOpNoteData);
   }
 
   function lastPage3() {
@@ -967,6 +976,11 @@ function App() {
   function lastPage4() {
     document.getElementById('page4').classList.remove('hidden');
     document.getElementById('page5').classList.add('hidden');
+    console.log(qrData);
+    console.log(qrData1);
+    console.log(qrData2);
+    console.log(qrData3);
+    console.log(qrData4);
   }
 
   function nextPage4() {
@@ -994,6 +1008,9 @@ function App() {
     console.log(failsList);
 
     //final calculations: notes scored in teleOp, notes scored in auto, total notes scored, average cycle time, total traps
+    teleArr = JSON.parse(localStorage.getItem('teleArr'));
+    autoArr = JSON.parse(localStorage.getItem('autoArr'));
+    
     console.log(autoArr);
     console.log(teleArr);
     var scoredInAuto = 0;
@@ -1031,12 +1048,12 @@ function App() {
     //qrData4 = saveAsCSV([pickupMethod, climbStatus]) + saveAsCSV(["\"" + failsList + "\""]) + saveAsCSV(["\"" + otherInfo + "\""])
     
     qrData4 = saveAsCSV([pickupMethod, climbStatus]) + saveAsCSV(failsList) + saveAsCSV(["\"" + otherInfo + "\""])
-    qrData = qrData1 + qrData2 + qrData3 + qrData4;
+    qrData = localStorage.getItem('qrData1') + localStorage.getItem('qrData2') + localStorage.getItem('qrData3') + qrData4;
     qrData += saveAsCSV([scoredInAuto, scoredInTeleOp, totalScored, avgCycleTime, canScoreInSpeaker, canScoreInAmp, canScoreInTrap, totalTraps]);
     console.log(qrData);
 
     //comment out the line below to hide variable data.
-    qrData += saveAsCSV(["auto"]) + saveAsCSV([autoNoteData]) + saveAsCSV(["teleOp"]) + saveAsCSV([teleOpNoteData]);
+    qrData += saveAsCSV(["auto"]) + saveAsCSV([localStorage.getItem('autoNoteData')]) + saveAsCSV(["teleOp"]) + saveAsCSV([localStorage.getItem('teleOpNoteData')]);
     
     document.getElementById('page5').classList.remove('hidden');
     document.getElementById('page4').classList.add('hidden');
