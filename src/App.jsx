@@ -12,7 +12,9 @@ import droppedI from './assets/droppedI.png';
 import trapI from './assets/trapI.png';
 import climbI from './assets/climbI.png';
 import {QrReader} from 'react-qr-reader';
-
+let globalTeamNum = "";
+let globalTeamColor = "";
+let globalMode = "auto";
 function App() {
 
   var lastUpdated = localStorage.getItem('lastUpdated');
@@ -63,12 +65,17 @@ function App() {
   }
 
   function restart() {
+    document.getElementById('actionLog').innerHTML = "";
+    document.getElementById('actionLog1').innerHTML = "";
+
     document.getElementById('page1').classList.remove('hidden');
     document.getElementById('page5').classList.add('hidden');
     qrData = "";
     autoNoteData = "";
     teleOpNoteData = "";
     document.getElementById('startAuto').style.backgroundColor = "black";
+    document.getElementById('startAuto').innerHTML = "Start Auto";
+
     document.getElementById('getRobotButton').classList.remove('hidden');
     var prevMatchNum = document.getElementById('match').value;
     document.getElementById('match').value = ++prevMatchNum;
@@ -109,7 +116,9 @@ function App() {
         scoredInTeleOp++;
       };
     };
-    document.getElementById('scoredInTeleOp').innerText = scoredInTeleOp;
+
+    document.getElementById("teleopScore").innerHTML = "Score: <span id=scoredInTeleOp>" + scoredInTeleOp + "</span>";
+
     return scoredInTeleOp;
   }
 
@@ -480,16 +489,19 @@ function App() {
     }
     console.log(correctMatch);
     var matchAlliances = correctMatch.alliances;
-    var correctTeamNum;
+     var correctTeamNum;
     if(role[0] == "b") {
       correctTeamNum = matchAlliances.blue.team_keys[role[1] - 1];
+
+
     }
     else if(role[0] == "r") {
       correctTeamNum = matchAlliances.red.team_keys[role[1] - 1];
+     
+
     }
     var teamNum = correctTeamNum.substring(3);
-    console.log(teamNum);
-
+    globalTeamNum = teamNum
     document.getElementById('getRobotButton').classList.add('hidden');
     document.getElementById("startMessage").innerHTML = "You're scouting: <span id=teamNum>" + teamNum + "</span>";
     document.getElementById('nextPage1Button').classList.remove('hidden');
@@ -528,6 +540,9 @@ function App() {
 
   function nextPage1() {
     //save data
+    globalMode = "auto";
+    
+
     const eventKey = document.getElementById('eventKey').value;
     //2024Clackm, 2024Yakima, 2024Wilson, 2024PNWDis, 2024Worlds
     switch(eventKey) {
@@ -568,10 +583,26 @@ function App() {
 
     qrData = qrData1 + qrData2 + qrData3 + qrData4;
     console.log(qrData);
+
     //unhide next page
     document.getElementById('page2').classList.remove('hidden');
     document.getElementById('page1').classList.add('hidden');
+    if (role[0] == "b"){
+      globalTeamColor = "Blue"
+
+    }
+    else if (role[0] == "r"){
+      console.log("r")
+
+      globalTeamColor = "Red"
+    }
+    console.log(globalTeamColor)
+    console.log(globalTeamNum)
+    document.getElementById("robotNumber").innerHTML = "You're scouting robot: <span id=teamNum> #" + globalTeamNum + "</span>";
+    document.getElementById("robotColor").innerHTML = "Alliance: " + globalTeamColor;
     if(role[0] == "b") {
+      console.log(role)
+
       document.getElementById('redField').style.display = 'none';
       document.getElementById('blueField').style.display = 'block';
       document.getElementById('b1').classList.remove('redArr');
@@ -649,6 +680,11 @@ function App() {
   function startAuto() {
     startTime = new Date();
     document.getElementById('startAuto').style.backgroundColor = "green";
+    document.getElementById('startAuto').innerHTML = "Auto Started";
+    var actionLogElement = document.getElementById('actionLog');
+    var existingContent = actionLogElement.innerHTML;
+    var additionalText = 'Auto started at: ' +  startTime.toLocaleTimeString();
+    actionLogElement.innerHTML = existingContent + '<br>' + additionalText; 
   }
 
   function logStart(startingPos) {
@@ -658,6 +694,10 @@ function App() {
     document.getElementById('start2').classList.remove('startPosSelected');
     document.getElementById('start3').classList.remove('startPosSelected');
     document.getElementById('start4').classList.remove('startPosSelected');
+    var actionLogElement = document.getElementById('actionLog');
+    var existingContent = actionLogElement.innerHTML;
+    var additionalText = 'Starting Position: ' + startingPos;
+    actionLogElement.innerHTML = existingContent + '<br>' + additionalText;
 
     //log starting position
     startPos = startingPos;
@@ -669,10 +709,18 @@ function App() {
     if(!document.getElementById('mobilityButton').classList.contains('selected')){
       document.getElementById('mobilityButton').classList.add('selected');
       mobility = "yes";
+      var actionLogElement = document.getElementById('actionLog');
+      var existingContent = actionLogElement.innerHTML;
+      var additionalText = 'Marked as mobile';
+      actionLogElement.innerHTML = existingContent + '<br>' + additionalText; 
     }
     else {
       mobility = "no";
       document.getElementById('mobilityButton').classList.remove('selected');
+      var actionLogElement = document.getElementById('actionLog');
+      var existingContent = actionLogElement.innerHTML;
+      var additionalText = 'Mobility removed';
+      actionLogElement.innerHTML = existingContent + '<br>' + additionalText; 
     }
   }
 
@@ -687,8 +735,29 @@ function App() {
   }
 
   function logNote(note) {
-    //a note is picked up
+    console.log(note)
+    if (note){
+      if (note[0] == "b") {
+      var actionLogElement = document.getElementById('actionLog');
+      var existingContent = actionLogElement.innerHTML;
+      var additionalText = 'Picked up bottom note #: ' + note.charAt(1);
+      actionLogElement.innerHTML = existingContent + '<br>' + additionalText; 
+    }
+    else if (note[0] == "t") {
+      var actionLogElement = document.getElementById('actionLog');
+      var existingContent = actionLogElement.innerHTML;
+      var additionalText = 'Picked up top note #: ' + note.charAt(1);
+      actionLogElement.innerHTML = existingContent + '<br>' + additionalText; 
+    }
+  }
 
+  else {
+      var actionLogElement = document.getElementById('actionLog1');
+      var existingContent = actionLogElement.innerHTML;
+      var additionalText = 'Picked up note';
+      actionLogElement.innerHTML = existingContent + '<br>' + additionalText; 
+    
+    }
     //clears previous selection indicator
     document.getElementById('b1').classList.remove('noteSelected');
     document.getElementById('b2').classList.remove('noteSelected');
@@ -725,11 +794,42 @@ function App() {
   }
 
   function scoredNote(place) {
+    if (globalMode == "auto"){
+      console.log("auto Mode")
+
+      if (place != 'dropped'){
+        var actionLogElement = document.getElementById('actionLog');
+        var existingContent = actionLogElement.innerHTML;
+        var additionalText = 'Note scored in ' +  place;
+        actionLogElement.innerHTML = existingContent + '<br>' + additionalText; }
+        else{ 
+        var actionLogElement = document.getElementById('actionLog');
+        var existingContent = actionLogElement.innerHTML;
+        var additionalText = 'Note dropped';
+        actionLogElement.innerHTML = existingContent + '<br>' + additionalText; }
+    }
+    else if (globalMode == "teleOp"){
+      console.log("teleOp Mode")
+      if (place != 'dropped'){ 
+      var actionLogElement = document.getElementById('actionLog1');
+      var existingContent = actionLogElement.innerHTML;
+      var additionalText = 'Note scored in ' +  place;
+      actionLogElement.innerHTML = existingContent + '<br>' + additionalText; }
+      else{ 
+        var actionLogElement = document.getElementById('actionLog1');
+        var existingContent = actionLogElement.innerHTML;
+        var additionalText = 'Note dropped';
+        actionLogElement.innerHTML = existingContent + '<br>' + additionalText; }
+    }
+    
     if(heldNote == "preload" && !document.getElementById('page3').classList.contains('hidden')) {
       //if preload is brought to teleOp
       const scoringLocation = place;
       const endTime = new Date();
       const timeToScore = (endTime - startTime) / 1000;
+      var actionLogElement = document.getElementById('actionLog1');
+      var existingContent = actionLogElement.innerHTML;
+      var additionalText = 'Preloaded piece scored in teleOp';
       console.log("preloaded piece scored in teleOp");
       teleOpNoteData += saveAsCSV([scoringLocation, timeToPickup, timeToScore]);
       teleArr.push([scoringLocation, timeToPickup + timeToScore]);
@@ -749,6 +849,8 @@ function App() {
     }
     if(document.getElementById('pickUpB').classList.contains('disabled')) {
       //piece picked up is scored
+    
+     
       const scoringLocation = place;
       const endTime = new Date();
       const timeToScore = (endTime - pickupTime) / 1000;
@@ -831,11 +933,19 @@ function App() {
   }
 
   function climb() {
+    var actionLogElement = document.getElementById('actionLog1');
+    var existingContent = actionLogElement.innerHTML;
+    var additionalText = 'Climb selected';
+    actionLogElement.innerHTML = existingContent + '<br>' + additionalText; 
     if(!document.getElementById('climbB').classList.contains('selected')) {
       document.getElementById('climbB').classList.add('selected');
       var climbStart = new Date();
       climbStartTime = (climbStart - startTime)/1000;
     } else {
+      var actionLogElement = document.getElementById('actionLog1');
+    var existingContent = actionLogElement.innerHTML;
+    var additionalText = 'Climb deselected';
+    actionLogElement.innerHTML = existingContent + '<br>' + additionalText; 
       //deselecting climb
       climbStartTime = 0;
       document.getElementById('climbB').classList.remove('selected');
@@ -843,13 +953,20 @@ function App() {
   }
 
   function nextPage2() {
+    globalMode = "teleOp";
+    document.getElementById("robotNumber1").innerHTML = "You're scouting robot: <span id=teamNum> #" + globalTeamNum + "</span>";
+    document.getElementById("robotColor1").innerHTML = "Alliance: " + globalTeamColor;
     qrData2 = saveAsCSV([startPos, mobility]);
     console.log(qrData2);
+
+    
+
     qrData = qrData1 + qrData2 + qrData3 + qrData4;
+
     console.log(qrData);
     document.getElementById('page3').classList.remove('hidden');
     document.getElementById('page2').classList.add('hidden');
-
+  
     //if a note is brought to teleOp:
     if(heldNote && heldNote !="preload"){
       heldNote == null;
@@ -866,7 +983,7 @@ function App() {
       document.getElementById('droppedB').classList.remove('disabled');
       document.getElementById('trapB').classList.remove('disabled');
     }
-
+   
     countTeleOp();
 
     localStorage.setItem('qrData2', qrData2);
@@ -874,6 +991,9 @@ function App() {
   }
 
   function lastPage2() {
+    document.getElementById("robotNumber").innerHTML = "You're scouting robot: <span id=teamNum> #" + globalTeamNum + "</span>";
+    document.getElementById("robotColor").innerHTML = "Alliance: " + globalTeamColor;
+    globalMode = "debrief";
     const eventKey = document.getElementById('eventKey').value;
     const role = document.getElementById('role').value;
     const matchNum = document.getElementById('match').value;
@@ -969,6 +1089,8 @@ function App() {
   }
 
   function lastPage3() {
+    document.getElementById("robotNumber1").innerHTML = "You're scouting robot: <span id=teamNum> #" + globalTeamNum + "</span>";
+    document.getElementById("robotColor1").innerHTML = "Alliance: " + globalTeamColor;
     document.getElementById('page3').classList.remove('hidden');
     document.getElementById('page4').classList.add('hidden');
   }
@@ -1147,9 +1269,31 @@ function App() {
 
       <div class="page hidden page2" id="page2">
         {/* auto (map) mobilityInAuto automatically checks if game piece is pressed*/}
+  
+          <div class="scoutInfo">
+              
+              <h5 class="scouterInfo">Robot Info</h5>
+                <h3 id = "robotNumber">
+
+                </h3>
+                <h3 id = "robotColor">
+
+                </h3>
+            
+          </div>
+
+          <div class="recentActions">
+            
+            <h5 class="scouterInfo">Action Log</h5>
+            <h3 id="actionLog">
+
+            </h3>
+
+          </div>
+        
         <div class="topButtons">
           <button class="back" onClick={() => lastPage1()}><p>&#8592;</p></button>
-          <button id="startAuto" onClick={() => startAuto()}>start auto</button>
+          <button id="startAuto" onClick={() => startAuto()}>Start Auto</button>
           <button class="forward" onClick={() => nextPage2()}><p> &#8594;</p></button>
         </div>
         <div class="imgContainer">
@@ -1176,9 +1320,28 @@ function App() {
 
       <div class="page hidden page3" id="page3">
         {/* teleop (speaker, amp, pickup, drop, trap, climb) */}
+        <div class="scoutInfo">
+        <div class="recentActions">
+            
+            <h5 class="scouterInfo">Action Log</h5>
+            <h3 id ="teleopScore">Score: 0</h3>
+            <h3 id="actionLog1">
+
+            </h3>
+
+          </div>
+        <h5 class="scouterInfo">Robot Info</h5>
+
+          <h3 id = "robotNumber1">
+         </h3>
+          <h3 id = "robotColor1">
+
+          </h3>
+
+          </div>
         <div class="topButtons">
           <button class="back" onClick={() => lastPage2()}><p>&#8592;</p></button>
-          <h3>TeleOp: <span id="scoredInTeleOp">0</span></h3>
+          <h1>TeleOp </h1>
           <button class="forward" onClick={() => nextPage3()}><p> &#8594;</p></button>
         </div>
         
@@ -1285,7 +1448,7 @@ function App() {
       </div>
     </div>
   );
-}
+        }
 
 export default App;
 
