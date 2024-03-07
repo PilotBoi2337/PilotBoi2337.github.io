@@ -1,35 +1,40 @@
-#root {
+html, body {margin: 0; height: 100%; overflow: hidden}
+
+f#root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 0.1rem;
+  padding: .1rem;
   text-align: center;
-  color: white;
+  color: #fff
 }
-
-/* .page1, .page5{
-  display: none;
-} */
-
-.page {
-  width: 100vw;
-  height: 100vh;
+.app{
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: #3c70cb;
+  color: #fff
+
 }
+.page {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
-
+}
 
 .hidden {
-  display: none;
+  display: none
 }
-
-/* pageQR styles */
 
 .scanDirections {
   width: 85%;
-  text-align: left;
+  text-align: left
 }
 
 .goToScannerB {
@@ -42,14 +47,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 25px;
+  font-size: 25px
 }
-
-/* page 1 styles */
 
 .logo {
   width: 120px;
-  margin-bottom: 5%;
+  margin-bottom: 5%
 }
 
 .question {
@@ -60,27 +63,25 @@
   border-radius: 15px;
   margin: 10px;
   padding: 5px;
-  width: 300px;
+  width: 300px
 }
 
 .question label {
   text-align: left;
   margin-left: 6px;
   margin-bottom: 3px;
-  font-weight: bold;
-  font-size: 1rem;
-
+  font-weight: 700;
+  font-size: 1rem
 }
 
-select, .question input {
+select,.question input {
   font-size: 1.3rem;
   border-radius: 5px;
   text-align: left;
-  padding: 8px;
-  padding-left: 10px;
+  padding: 8px 8px 8px 10px;
   border-style: none;
-  font-weight: bold;
-  background-color: #3d3d3d;
+  font-weight: 700;
+  background-color: #3d3d3d
 }
 
 .question textarea {
@@ -91,88 +92,76 @@ select, .question input {
 
 .bButton {
   border-radius: 25px;
-  background-color: rgba(39, 38, 38, 0.425);
+  background-color: #2726266c;
   border-width: 3px;
   border-style: solid;
-  border-color: white;
-  font-weight: bold;
+  border-color: #fff;
+  font-weight: 700;
   letter-spacing: 1.5px;
   margin: 1px;
-  color: white;
+  color: #fff;
 }
 
 .iconBContainer {
-  height:85vh;
+  height: 85vh;
+  width: 70vh;
+  display:flex;
+flex-direction: column;
+justify-content: center;
+justify-content: space-around;
+flex-wrap: wrap;
 }
 
 .iconB {
   width: 48%;
-  margin: 0.5%;
-  height: 33%;
-  background-color:rgb(72, 72, 72);
+  display: flex;
+  margin: .5%;
+  height: 25%;
+  background-color: #484848;
+  justify-content: center;
+flex-direction: column;
+align-items: center;
 }
 
-.teleOpIcon {
-  width: 100%;
-}
+.teleOpIcon {width: 55%;}
 
 #climbB.iconB {
   position: relative;
-  top: 0.5%;
+  top: .5%
 }
 
-#getRobotButton {
-  margin-top: 15px;
+#getRobotButton,#nextPage1Button {
+  margin-top: 15px
 }
-
-#reassignRobot p {
-  font-size: 2rem;
-  margin: 0;
-}
-
-#lastUpdated {
-  font-size: 0.8rem;
-  margin: 0;
-}
-
-#nextPage1Button {
-  margin-top: 15px;
-}
-
-.removeMargin {
-  margin: 0;
-  margin-top: 10px;
-}
-
-/* page 2 styles */
 
 .topButtons {
   width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: flex-start;
   margin-top: 15px;
   margin-bottom: 15px;
-  height: 5vh;
+  height: 5vh
 }
 
-.topButtons p {
-  margin: 0;
-}
-
-.back, .forward {
+.back,.forward {
   width: 6.5rem;
 }
 
+
+
 .imgContainer {
-  width: 100%;
-  height: 65vh;
+  display: flex;
+  width: 75%;
+  height: 65%;
   position: relative;
+  justify-content: center;
+
 }
 
 .fieldIMG {
-  width: 100%;
+  width: 75%;
   height: 100%;
   z-index: 0;
 }
@@ -182,166 +171,175 @@ select, .question input {
   z-index: 10;
   padding: 0;
   text-align: center;
-  width: 10vw;
-  height: 10vw;
+  width: 7%;
+  height:14%;
   border-radius: 50%;
   background-color: orange;
 }
 
-.note::before {
-  content: ''; /* Required for the pseudo-element to be generated */
-  background-color: white; /* White background for the inner circle */
-  border-radius: 50%; /* Make the pseudo-element circular */
-  width: 70%; /* Width of the inner circle, relative to the button */
-  height: 70%; /* Height of the inner circle, relative to the button */
-  position: absolute; /* Position absolutely within the button */
+.note:before {
+  content: "";
+  background-color: #fff;
+  border-radius: 50%;
+  width: 70%;
+  height: 70%;
+  position: absolute;
   left: 15%;
-  top: 15%;
+  top: 15%
 }
 
-.startPos{
+.startPos {
   position: absolute;
-  height: 22%;
+  height: 15%;
   width: 19%;
-  background-color: rgba(0, 0, 0, 0.425);
-  padding: 0;
+  background-color: #0000006c;
+  padding: 0
 }
 
 #start1.blueArr {
   bottom: 1%;
-  left: 6%;
+  left: 14%;
+  width: 15%
+
 }
+
 #start2.blueArr {
   bottom: 1%;
-  left: 26%;
+  left: 31%;
+  width: 15%
 }
+
 #start3.blueArr {
   bottom: 1%;
-  left: 46%;
+  right: 31%;
+  width: 15%;
+
 }
+
 #start4.blueArr {
   bottom: 1%;
-  left: 66%;
-  width: 30%;
+  right: 14%;
+  width: 15%
 }
 
 #start1.redArr {
   bottom: 1%;
-  right: 6%;
+  right: 15%;
+  width: 15%
 }
+
 #start2.redArr {
   bottom: 1%;
-  right: 26%;
+  right: 31%;
+  width: 15%
+
 }
+
 #start3.redArr {
   bottom: 1%;
-  right: 46%;
+  left: 31%;
+  width: 15%;
+
 }
+
 #start4.redArr {
   bottom: 1%;
-  right: 66%;
-  width: 30%;
+  left: 15%;
+  width: 15%;
+
 }
 
 #b1.blueArr {
-  top: 64%;
-  left: 11%;
+  top:62%;
+  left: 22%
 }
+
 #b2.blueArr {
-  top: 64%;
-  left: 28%;
+  top: 62%;
+  left: 35%
 }
+
 #b3.blueArr {
-  top: 64%;
-  left: 45.25%;
+  top: 62%;
+  left: 48.25%
 }
 
 #b1.redArr {
-  top: 64%;
-  left: 79.5%;
-}
-#b2.redArr {
-  top: 64%;
-  left: 62.5%;
-}
-#b3.redArr {
-  top: 64%;
-  left: 45.25%;
+  top: 62%;
+  right:23%
 }
 
-#b3 {
-  top: 64%;
-  left: 45.25%;
+#b2.redArr {
+  top: 62%;
+  right: 34%
+}
+
+#b3.redArr,#b3 {
+  top: 62%;
+  right: 45%
 }
 
 #t1 {
-  top: 17%;
-  left: 8.5%;
+  top: 14%;
+  left: 18.5%
 }
 
 #t2 {
-  top: 17%;
-  left: 26.5%;
+  top: 14%;
+  left: 32.5%
 }
 
 #t3 {
-  top: 17%;
-  left: 45.25%;
+  top: 14%;
+  left: 47.25%
 }
 
 #t4 {
-  top: 17%;
-  left: 64%;
+  top: 14%;
+  left: 62%
 }
 
 #t5 {
-  top: 17%;
-  left: 82%;
+  top: 14%;
+  left: 75%
 }
 
 .noteSelected {
-  background-color: rgb(239, 205, 191);
+  background-color: #efcdbf
 }
 
-.startPosSelected {
-  background-color: rgba(141, 141, 141, 0.385);
-}
-
-.selected {
-  background-color: rgba(141, 141, 141, 0.385);
+.startPosSelected,.selected {
+  background-color: #8d8d8d62
 }
 
 .scored {
   width: 20rem;
-  margin: 8px;
+  margin: 8px
 }
-
-
 
 .scored.lastSelected {
   border-width: 3px;
   border-style: solid;
-  border-color: rgb(155, 155, 155);
+  border-color: #9b9b9b
 }
 
 #speakerButton {
-  margin-top: 20px;
+  margin-top: 20px
 }
 
-
-/* page 3 styles */
 h3 {
   margin: 0;
   padding: 0;
   position: relative;
-  top: 5px;
+  top: 5px
 }
 
 .disabled {
-  background-color: rgba(73, 73, 73, 0.53);
-}
+  opacity: .5;
+  background-color: #484848;
+  
 
-/* page 4 styles */
+}
 
 .CFL {
   display: flex;
@@ -351,15 +349,15 @@ h3 {
   border-radius: 15px;
   margin: 10px;
   padding: 5px;
-  width: 300px;
+  width: 300px
 }
 
-.CFL .topLabel{
+.CFL .topLabel {
   text-align: left;
   margin-left: 6px;
   margin-bottom: 3px;
-  font-weight: bold;
-  font-size: 1rem;
+  font-weight: 700;
+  font-size: 1rem
 }
 
 fieldset {
@@ -367,501 +365,136 @@ fieldset {
   padding: 10px;
   margin-bottom: 20px;
   border: none;
-  font-weight: bold;
+  font-weight: 700
 }
 
 legend {
   padding: 0 10px;
   font-size: 18px;
-  font-weight: bold;
+  font-weight: 700
 }
 
 .fail {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 10px
 }
 
-input[type="checkbox"] {
-  transform: scale(1.5); /* Enlarge the checkbox */
+input[type=checkbox] {
+  transform: scale(1.5);
   margin-right: 10px;
-  cursor: pointer;
+  cursor: pointer
 }
 
 .restart {
   border: 3px solid white;
   border-radius: 30px;
-  font-weight: bold;
-  background-color: rgba(39, 38, 38, 0.425);
+  font-weight: 700;
+  background-color: #2726266c
 }
 
-@media (orientation: landscape){
-  html, body {
-    margin: 0; 
-    height: 100%; 
-    overflow: hidden;
+:root {
+  font-family: Inter,system-ui,Avenir,Helvetica,Arial,sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: dark;
+  background-color: #3c70cb;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale
+}
 
-  }
+select,button {
+  color: #fff
+}
 
-  f#root {
-    max-width: 100%;
-    text-align: center;
-    color: #fff
-  }
-  .app{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    width: 100vw;
-    background-color: #3c70cb;
-    color: #fff
-  
-  }
-  .page {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  
-  }
-  
-  .hidden {
-    display: none
-  }
-  
-  .scanDirections {
-    width: 85%;
-    text-align: left
-  }
-  
-  .goToScannerB {
-    position: absolute;
-    right: 5vw;
-    top: 5vw;
-    height: 7vh;
-    width: 7vh;
-    border-radius: 100px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 25px
-  }
-  
-  .logo {
-    width: 120px;
-    margin-bottom: 5%
-  }
-  
-  .question {
-    display: flex;
-    flex-direction: column;
-    font-size: 1.3rem;
-    background-color: #5a85cf;
-    border-radius: 15px;
-    margin: 10px;
-    padding: 5px;
-    width: 300px
-  }
-  
-  .question label {
-    text-align: left;
-    margin-left: 6px;
-    margin-bottom: 3px;
-    font-weight: 700;
-    font-size: 1rem
-  }
-  
-  select,.question input {
-    font-size: 1.3rem;
-    border-radius: 5px;
-    text-align: left;
-    padding: 8px 8px 8px 10px;
-    border-style: none;
-    font-weight: 700;
-    background-color: #3d3d3d
-  }
-  
-  .question textarea {
-    width: 95%;
-    font-size: 1.3rem;
-    height: 2.6rem;
-  }
-  
-  .bButton {
-    border-radius: 25px;
-    background-color: #2726266c;
-    border-width: 3px;
-    border-style: solid;
-    border-color: #fff;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    margin: 1px;
-    color: #fff;
-  }
-  
-  .iconBContainer {
-    height: 85vh;
-    width: 70vh;
-    display:flex;
-  flex-direction: column;
-  justify-content: center;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  }
-  
-  .iconB {
-    width: 48%;
-    display: flex;
-    margin: .5%;
-    height: 25%;
-    background-color: #484848;
-    justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  }
-  
-  .teleOpIcon {width: 55%;}
-  
-  #climbB.iconB {
-    position: relative;
-    top: .5%
-  }
-  
-  #getRobotButton,#nextPage1Button {
-    margin-top: 15px
-  }
-  
-  .topButtons {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: flex-start;
-    margin-top: 15px;
-    margin-bottom: 15px;
-    height: 5vh
-  }
-  
-  .back,.forward {
-    width: 6.5rem;
-  }
-  
-  
-  
-  .imgContainer {
-    display: flex;
-    width: 75%;
-    height: 65%;
-    position: relative;
-    justify-content: center;
-  
-  }
-  
-  .fieldIMG {
-    width: 75%;
-    height: 100%;
-    z-index: 0;
-  }
-  
-  .note {
-    position: absolute;
-    z-index: 10;
-    padding: 0;
-    text-align: center;
-    width: 7%;
-    height:14%;
-    border-radius: 50%;
-    background-color: orange;
-  }
-  
-  .note:before {
-    content: "";
-    background-color: #fff;
-    border-radius: 50%;
-    width: 70%;
-    height: 70%;
-    position: absolute;
-    left: 15%;
-    top: 15%
-  }
-  
-  .startPos {
-    position: absolute;
-    height: 15%;
-    width: 19%;
-    background-color: #0000006c;
-    padding: 0
-  }
-  
-  #start1.blueArr {
-    bottom: 1%;
-    left: 14%;
-    width: 15%
-  
-  }
-  
-  #start2.blueArr {
-    bottom: 1%;
-    left: 31%;
-    width: 15%
-  }
-  
-  #start3.blueArr {
-    bottom: 1%;
-    right: 31%;
-    width: 15%;
-  
-  }
-  
-  #start4.blueArr {
-    bottom: 1%;
-    right: 14%;
-    width: 15%
-  }
-  
-  #start1.redArr {
-    bottom: 1%;
-    right: 15%;
-    width: 15%
-  }
-  
-  #start2.redArr {
-    bottom: 1%;
-    right: 31%;
-    width: 15%
-  
-  }
-  
-  #start3.redArr {
-    bottom: 1%;
-    left: 31%;
-    width: 15%;
-  
-  }
-  
-  #start4.redArr {
-    bottom: 1%;
-    left: 15%;
-    width: 15%;
-  
-  }
-  
-  #b1.blueArr {
-    top:62%;
-    left: 22%
-  }
-  
-  #b2.blueArr {
-    top: 62%;
-    left: 35%
-  }
-  
-  #b3.blueArr {
-    top: 62%;
-    left: 48.25%
-  }
-  
-  #b1.redArr {
-    top: 62%;
-    right:23%
-  }
-  
-  #b2.redArr {
-    top: 62%;
-    right: 34%
-  }
-  
-  #b3.redArr,#b3 {
-    top: 62%;
-    right: 45%
-  }
-  
-  #t1 {
-    top: 14%;
-    left: 18.5%
-  }
-  
-  #t2 {
-    top: 14%;
-    left: 32.5%
-  }
-  
-  #t3 {
-    top: 14%;
-    left: 47.25%
-  }
-  
-  #t4 {
-    top: 14%;
-    left: 62%
-  }
-  
-  #t5 {
-    top: 14%;
-    left: 75%
-  }
-  
-  .noteSelected {
-    background-color: #efcdbf
-  }
-  
-  .startPosSelected,.selected {
-    background-color: #8d8d8d62
-  }
-  
-  .scored {
-    width: 20rem;
-    margin: 8px
-  }
-  
-  .scored.lastSelected {
-    border-width: 3px;
-    border-style: solid;
-    border-color: #9b9b9b
-  }
-  
-  #speakerButton {
-    margin-top: 20px
-  }
-  
-  h3 {
-    margin: 0;
-    padding: 0;
-    position: relative;
-    top: 5px
-  }
-  
-  .disabled {
-    background-color: #49494987
-  }
-  
-  .CFL {
-    display: flex;
-    flex-direction: column;
-    font-size: 1.15rem;
-    background-color: #5a85cf;
-    border-radius: 15px;
-    margin: 10px;
-    padding: 5px;
-    width: 300px
-  }
-  
-  .CFL .topLabel {
-    text-align: left;
-    margin-left: 6px;
-    margin-bottom: 3px;
-    font-weight: 700;
-    font-size: 1rem
-  }
-  
-  fieldset {
-    background-color: #3d3d3d;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: none;
-    font-weight: 700
-  }
-  
-  legend {
-    padding: 0 10px;
-    font-size: 18px;
-    font-weight: 700
-  }
-  
-  .fail {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px
-  }
-  
-  input[type=checkbox] {
-    transform: scale(1.5);
-    margin-right: 10px;
-    cursor: pointer
-  }
-  
-  .restart {
-    border: 3px solid white;
-    border-radius: 30px;
-    font-weight: 700;
-    background-color: #2726266c
-  }
-  
-  :root {
-    font-family: Inter,system-ui,Avenir,Helvetica,Arial,sans-serif;
-    line-height: 1.5;
-    font-weight: 400;
-    color-scheme: dark;
-    background-color: #3c70cb;
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale
-  }
-  
-  select,button {
-    color: #fff
-  }
-  
-  a {
-    font-weight: 500;
-    color: #fff;
-    cursor: pointer;
-    text-decoration: inherit;
-    background-color: #08f;
-    padding: 10px;
-    border-radius: 30px
-  }
-  
-  a:hover {
-    color: #535bf2
-  }
-  
-  body {
-    margin: 0;
-    display: flex;
-    /* place-items: center; */
-    justify-content: center;
-    align-items: center;
-    min-width: 320px;
-    min-height: 100vh;
-    color: #fff
-    
-  }
+a {
+  font-weight: 500;
+  color: #fff;
+  cursor: pointer;
+  text-decoration: inherit;
+  background-color: #08f;
+  padding: 10px;
+  border-radius: 30px
+}
 
-  #root {
-    justify-content: center;
-  }
-  
-  h1 {
-    font-size: 3.2em;
-    line-height: 1.1
-  }
-  
-  button {
-    border-radius: 8px;
-    border: 1px solid transparent;
-    padding: .6em 1.2em;
-    font-size: 1em;
-    font-weight: 500;
-    font-family: inherit;
-    background-color: #1a1a1a;
-    cursor: pointer;
-    transition: border-color .25s
-  }
-  
-  button:hover {
-    border-color: #646cff
-  }
-  
-  button:focus,button:focus-visible {
-    outline: 4px auto -webkit-focus-ring-color
-  }
+a:hover {
+  color: #535bf2
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  color: #fff
   
 }
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: .6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color .25s
+}
+
+button:hover {
+  border-color: #646cff
+}
+
+button:focus,button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color
+}
+
+
+.scoutInfo{  
+  position: absolute;
+  bottom: 25px;
+  left: 50px;
+  display: flex;
+  flex-direction: column;
+  font-size: 1.3rem;
+  background-color: #5a85cf;
+  border-radius: 15px;
+  margin: 10px;
+  padding: 20px;
+  width: 350px
+}
+
+.recentActions{
+
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  font-size: 1.3rem;
+  background-color: #5a85cf;
+  border-radius: 15px;
+  margin: 10px;
+  padding: 20px;
+  width: 350px;
+  left: 50px;
+  top: 190px;
+  height: 850px;
+  overflow: scroll;
+
+}
+.scouterInfo{
+font-size: 30px;
+text-align: center;
+margin: 10px;
+}
+.inner{ position: relative; height: auto; }
+.full-height{ height: 100%; }
